@@ -60,12 +60,14 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200/50 transition-all">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2 cursor-pointer relative" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className="relative inline-block animate-sparkle-logo">
+        <div className="flex items-center gap-2 cursor-pointer relative group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          {/* ANIMATED LOGO CONTAINER */}
+          <div className="relative inline-block animate-logo-float">
+            <div className="absolute inset-0 bg-blue-400/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-500"></div>
             <img 
               src="/barakah-chaser-logo.png" 
               alt="BARAKAH CHASER" 
-              className="h-12 w-auto relative z-10"
+              className="h-12 w-auto relative z-10 transition-transform duration-300 group-hover:scale-110 animate-sparkle-logo"
             />
           </div>
         </div>
@@ -152,13 +154,10 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-50 font-sans selection:bg-blue-100 pt-16 relative">
       
-      {/* GLOBAL BACKGROUND ELEMENTS (The "Spice") */}
+      {/* GLOBAL BACKGROUND ELEMENTS */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        {/* Animated Rainbow Background */}
         <div className="absolute inset-0 animate-rainbow-bg"></div>
-        {/* Tech Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-        {/* Soft Glowing Orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"></div>
       </div>
@@ -237,26 +236,10 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ServiceCard 
-              title="Web Development" 
-              desc="Fast, SEO-optimized websites built with Next.js. We ensure your digital presence is flawless."
-              icon={Globe}
-            />
-            <ServiceCard 
-              title="Mobile Apps" 
-              desc="Cross-platform mobile applications that provide seamless user experiences on iOS and Android."
-              icon={Smartphone}
-            />
-            <ServiceCard 
-              title="AI Integration" 
-              desc="Leverage the power of Large Language Models to automate support, sales, and data analysis."
-              icon={Zap}
-            />
-            <ServiceCard 
-              title="SaaS Engineering" 
-              desc="End-to-end software development. We turn complex ideas into shipping products."
-              icon={Code}
-            />
+            <ServiceCard title="Web Development" desc="Fast, SEO-optimized websites built with Next.js." icon={Globe} />
+            <ServiceCard title="Mobile Apps" desc="Cross-platform mobile applications for iOS and Android." icon={Smartphone} />
+            <ServiceCard title="AI Integration" desc="Leverage Large Language Models to automate your business." icon={Zap} />
+            <ServiceCard title="SaaS Engineering" desc="End-to-end software development from idea to product." icon={Code} />
           </div>
         </div>
       </section>
@@ -267,9 +250,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
                 <div>
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Featured Projects</h2>
-                    <p className="text-slate-600 max-w-xl text-lg">
-                        See how we help businesses transform with technology.
-                    </p>
+                    <p className="text-slate-600 max-w-xl text-lg">See how we help businesses transform with technology.</p>
                 </div>
                 <Button variant="ghost" className="text-blue-600 hover:text-blue-700 font-semibold gap-1">
                     View All Projects <ChevronRight size={16} />
@@ -277,94 +258,35 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <ProjectCard 
-                    title="Resume Roaster AI"
-                    desc="An AI-powered application that analyzes resumes and provides brutal, constructive feedback to help job seekers improve."
-                    tag="AI SaaS"
-                    link="https://roastingresumes.streamlit.app/" // UPDATE THIS
-                />
-                <ProjectCard 
-                    title="Voice2SOP"
-                    desc="A voice-to-SOP converter that records voice instructions and converts them into structured operational procedures."
-                    tag="AI SaaS"
-                    link="https://voice2sop.streamlit.app/" // UPDATE THIS
-                />
+                <ProjectCard title="Resume Roaster AI" desc="An AI that analyzes resumes and provides constructive feedback." tag="AI SaaS" link="https://roastingresumes.streamlit.app/" />
+                <ProjectCard title="Voice2SOP" desc="Converts voice instructions into structured operational procedures." tag="AI SaaS" link="https://voice2sop.streamlit.app/" />
             </div>
         </div>
       </section>
 
-      {/* CONTACT FORM SECTION (The Functional Upgrade) */}
+      {/* Contact Section */}
       <section id="contact" className="py-24 relative z-10">
         <div className="container mx-auto px-4">
           <div className="bg-slate-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
-             
-             {/* Left: Info Side */}
              <div className="p-10 md:p-12 text-white bg-slate-900 relative w-full md:w-2/5 flex flex-col justify-between">
-                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
-                
                 <div className="relative z-10">
                     <h3 className="text-3xl font-bold mb-6">Let's build something great.</h3>
-                    <p className="text-slate-300 mb-8 leading-relaxed">
-                        Ready to start your next project? Fill out the form and our team will get back to you within 24 hours.
-                    </p>
-                    
+                    <p className="text-slate-300 mb-8 leading-relaxed">Ready to start? Get back to you within 24 hours.</p>
                     <div className="space-y-4">
-                        <div className="flex items-center gap-3 text-slate-300">
-                            <Mail className="w-5 h-5 text-blue-400" />
-                            <span>core@bc-studios.org</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-slate-300">
-                            <MapPin className="w-5 h-5 text-purple-400" />
-                            <span>Chicago, IL</span>
-                        </div>
+                        <div className="flex items-center gap-3 text-slate-300"><Mail className="w-5 h-5 text-blue-400" /><span>core@bc-studios.org</span></div>
+                        <div className="flex items-center gap-3 text-slate-300"><MapPin className="w-5 h-5 text-purple-400" /><span>Chicago, IL</span></div>
                     </div>
-                </div>
-
-                <div className="mt-12 relative z-10">
-                    <p className="text-sm text-slate-500">BC-Studios Inc.</p>
                 </div>
              </div>
-
-             {/* Right: The Form */}
              <div className="p-10 md:p-12 bg-white w-full md:w-3/5">
-                {/* IMPORTANT: To make this form work, go to https://formspree.io/
-                   1. Create a free account.
-                   2. Create a new form.
-                   3. Copy the URL they give you (e.g., https://formspree.io/f/xyzyxyzy).
-                   4. Replace the "action" URL below.
-                */}
                 <form action="https://formspree.io/f/xnjjdzdy" method="POST" className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-slate-700">Full Name</label>
-                            <input required name="name" type="text" placeholder="John Doe" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all" />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-slate-700">Email Address</label>
-                            <input required name="email" type="email" placeholder="john@example.com" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all" />
-                        </div>
+                        <input required name="name" type="text" placeholder="Full Name" className="w-full px-4 py-3 rounded-lg border border-slate-200" />
+                        <input required name="email" type="email" placeholder="Email Address" className="w-full px-4 py-3 rounded-lg border border-slate-200" />
                     </div>
-                    
-                    <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700">Project Type</label>
-                        <select name="project_type" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all bg-white">
-                            <option>Web Application</option>
-                            <option>Mobile App</option>
-                            <option>AI Integration</option>
-                            <option>Website Redesign</option>
-                            <option>Other</option>
-                        </select>
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700">Project Details</label>
-                        <textarea required name="message" rows={4} placeholder="Tell us about your idea..." className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"></textarea>
-                    </div>
-
-                    <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg shadow-blue-600/20 transition-all hover:-translate-y-1">
-                        Send Message <Send className="ml-2 w-4 h-4" />
-                    </Button>
+                    <select name="project_type" className="w-full px-4 py-3 rounded-lg border border-slate-200"><option>Web Application</option><option>Mobile App</option><option>AI Integration</option></select>
+                    <textarea required name="message" rows={4} placeholder="Project Details" className="w-full px-4 py-3 rounded-lg border border-slate-200 resize-none"></textarea>
+                    <Button className="w-full h-12 bg-blue-600 text-white font-bold rounded-lg shadow-lg">Send Message <Send className="ml-2 w-4 h-4" /></Button>
                 </form>
              </div>
           </div>
@@ -375,176 +297,66 @@ export default function Home() {
       <footer className="py-12 bg-slate-50 border-t border-slate-200 text-slate-600 text-sm relative z-10">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <p>&copy; {new Date().getFullYear()} BC-Studios. All rights reserved.</p>
-            <div className="flex gap-6">
-                <a href="#" className="hover:text-blue-600 transition-colors">Privacy</a>
-                <a href="#" className="hover:text-blue-600 transition-colors">Terms</a>
-            </div>
         </div>
       </footer>
 
-      {/* Styles for Marquee & Grid */}
+      {/* REFINED ANIMATION STYLES */}
       <style jsx global>{`
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-100%); }
+        @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-100%); } }
+        @keyframes marquee2 { 0% { transform: translateX(100%); } 100% { transform: translateX(0%); } }
+        .animate-marquee { animation: marquee 25s linear infinite; }
+        .animate-marquee2 { animation: marquee2 25s linear infinite; }
+
+        /* THE LOGO ANIMATION FIXES */
+        @keyframes logo-float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-5px) rotate(1deg); }
         }
-        @keyframes marquee2 {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(0%); }
+        .animate-logo-float {
+          animation: logo-float 4s ease-in-out infinite;
         }
-        .animate-marquee {
-          animation: marquee 25s linear infinite;
-        }
-        .animate-marquee2 {
-          animation: marquee2 25s linear infinite;
-        }
-        @keyframes slide-rainbow {
-          0% { 
-            transform: translateX(0px);
-            color: #006400; /* Deep green */
-          }
-          14.28% { 
-            transform: translateX(10px);
-            color: #FF0000; /* Red */
-          }
-          28.56% { 
-            transform: translateX(0px);
-            color: #FF7F00; /* Orange */
-          }
-          42.84% { 
-            transform: translateX(-10px);
-            color: #FFFF00; /* Yellow */
-          }
-          57.12% { 
-            transform: translateX(0px);
-            color: #00FF00; /* Green */
-          }
-          71.4% { 
-            transform: translateX(10px);
-            color: #0000FF; /* Blue */
-          }
-          85.68% { 
-            transform: translateX(0px);
-            color: #4B0082; /* Indigo */
-          }
-          100% { 
-            transform: translateX(-10px);
-            color: #9400D3; /* Violet */
-          }
-        }
-        .animate-slide-rainbow {
-          animation: slide-rainbow 3s ease-in-out infinite;
-        }
-        @keyframes rainbow-bg {
-          0% { 
-            background-color: rgba(0, 100, 0, 0.05); /* Deep green - very low opacity */
-          }
-          14.28% { 
-            background-color: rgba(255, 0, 0, 0.05); /* Red */
-          }
-          28.56% { 
-            background-color: rgba(255, 127, 0, 0.05); /* Orange */
-          }
-          42.84% { 
-            background-color: rgba(255, 255, 0, 0.05); /* Yellow */
-          }
-          57.12% { 
-            background-color: rgba(0, 255, 0, 0.05); /* Green */
-          }
-          71.4% { 
-            background-color: rgba(0, 0, 255, 0.05); /* Blue */
-          }
-          85.68% { 
-            background-color: rgba(75, 0, 130, 0.05); /* Indigo */
-          }
-          100% { 
-            background-color: rgba(148, 0, 211, 0.05); /* Violet */
-          }
-        }
-        .animate-rainbow-bg {
-          animation: rainbow-bg 8s ease-in-out infinite;
-        }
+
         @keyframes sparkle-logo {
-          0% { 
-            filter: brightness(1) hue-rotate(0deg);
-          }
-          14.28% { 
-            filter: brightness(1.4) hue-rotate(51deg);
-          }
-          28.56% { 
-            filter: brightness(1) hue-rotate(102deg);
-          }
-          42.84% { 
-            filter: brightness(1.5) hue-rotate(153deg);
-          }
-          57.12% { 
-            filter: brightness(1) hue-rotate(204deg);
-          }
-          71.4% { 
-            filter: brightness(1.4) hue-rotate(255deg);
-          }
-          85.68% { 
-            filter: brightness(1) hue-rotate(306deg);
-          }
-          100% { 
-            filter: brightness(1.3) hue-rotate(360deg);
-          }
-        }
-        @keyframes star-twinkle {
-          0%, 100% { 
-            opacity: 0.3;
-            transform: scale(0.8);
-          }
-          50% { 
-            opacity: 1;
-            transform: scale(1.2);
-          }
+          0%, 100% { filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.2)) brightness(1); }
+          50% { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)) brightness(1.1); }
         }
         .animate-sparkle-logo {
-          position: relative;
-          display: inline-block;
-        }
-        .animate-sparkle-logo img {
           animation: sparkle-logo 3s ease-in-out infinite;
-          filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
         }
-        .animate-sparkle-logo::before {
-          content: '';
+
+        /* TWINKLING STARS BACKGROUND FOR LOGO */
+        .animate-logo-float::before {
+          content: '✦';
           position: absolute;
-          top: 0;
-          left: 0;
+          font-size: 8px;
+          color: #3b82f6;
+          top: -5px;
           right: 0;
-          bottom: 0;
-          width: 100%;
-          height: 100%;
-          background: 
-            radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.7) 0%, transparent 50%),
-            radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
-            radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.7) 0%, transparent 50%);
-          animation: star-twinkle 1.5s ease-in-out infinite;
-          pointer-events: none;
-          mix-blend-mode: screen;
-          z-index: 20;
+          animation: star-twinkle 2s infinite;
+          opacity: 0.7;
         }
-        .animate-sparkle-logo::after {
-          content: '';
+        .animate-logo-float::after {
+          content: '✧';
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          width: 100%;
-          height: 100%;
-          background: 
-            radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.7) 0%, transparent 50%),
-            radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
-            radial-gradient(circle at 90% 50%, rgba(255, 255, 255, 0.8) 0%, transparent 50%);
-          animation: star-twinkle 2s ease-in-out infinite 0.5s;
-          pointer-events: none;
-          mix-blend-mode: screen;
-          z-index: 20;
+          font-size: 10px;
+          color: #6366f1;
+          bottom: 5px;
+          left: -10px;
+          animation: star-twinkle 2s infinite 1s;
+          opacity: 0.5;
         }
+
+        @keyframes star-twinkle {
+          0%, 100% { opacity: 0.3; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes rainbow-bg {
+          0% { background-color: rgba(59, 130, 246, 0.03); }
+          50% { background-color: rgba(147, 51, 234, 0.03); }
+          100% { background-color: rgba(59, 130, 246, 0.03); }
+        }
+        .animate-rainbow-bg { animation: rainbow-bg 8s ease-in-out infinite; }
       `}</style>
     </main>
   );
