@@ -60,11 +60,12 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200/50 transition-all">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/30">
-            B
-          </div>
-          <span className="text-[#006400] font-bold text-lg tracking-tight animate-slide-rainbow">BC-Studios</span>
+        <div className="flex items-center gap-2 cursor-pointer relative" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <img 
+            src="/barakah-chaser-logo.png" 
+            alt="BARAKAH CHASER" 
+            className="h-12 w-auto animate-sparkle-logo relative z-10"
+          />
         </div>
 
         <div className="hidden md:flex items-center gap-8">
@@ -278,7 +279,7 @@ export default function Home() {
                     title="Resume Roaster AI"
                     desc="An AI-powered application that analyzes resumes and provides brutal, constructive feedback to help job seekers improve."
                     tag="AI SaaS"
-                    link="https://your-resume-app-url.com" // UPDATE THIS
+                    link="https://roastingresumes.streamlit.app/" // UPDATE THIS
                 />
                 <ProjectCard 
                     title="Voice2SOP"
@@ -460,6 +461,77 @@ export default function Home() {
         }
         .animate-rainbow-bg {
           animation: rainbow-bg 8s ease-in-out infinite;
+        }
+        @keyframes sparkle-logo {
+          0% { 
+            filter: brightness(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3)) hue-rotate(0deg);
+          }
+          14.28% { 
+            filter: brightness(1.4) drop-shadow(0 0 8px rgba(255, 255, 255, 0.9)) hue-rotate(51deg);
+          }
+          28.56% { 
+            filter: brightness(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3)) hue-rotate(102deg);
+          }
+          42.84% { 
+            filter: brightness(1.5) drop-shadow(0 0 10px rgba(255, 255, 255, 1)) hue-rotate(153deg);
+          }
+          57.12% { 
+            filter: brightness(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3)) hue-rotate(204deg);
+          }
+          71.4% { 
+            filter: brightness(1.4) drop-shadow(0 0 8px rgba(255, 255, 255, 0.9)) hue-rotate(255deg);
+          }
+          85.68% { 
+            filter: brightness(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3)) hue-rotate(306deg);
+          }
+          100% { 
+            filter: brightness(1.3) drop-shadow(0 0 6px rgba(255, 255, 255, 0.7)) hue-rotate(360deg);
+          }
+        }
+        .animate-sparkle-logo {
+          animation: sparkle-logo 3s ease-in-out infinite;
+          position: relative;
+        }
+        @keyframes star-twinkle {
+          0%, 100% { 
+            opacity: 0.3;
+            transform: scale(0.8);
+          }
+          50% { 
+            opacity: 1;
+            transform: scale(1.2);
+          }
+        }
+        .animate-sparkle-logo::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: 
+            radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
+            radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+            radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.5) 0%, transparent 50%);
+          animation: star-twinkle 1.5s ease-in-out infinite;
+          pointer-events: none;
+          mix-blend-mode: screen;
+        }
+        .animate-sparkle-logo::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: 
+            radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
+            radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+            radial-gradient(circle at 90% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 50%);
+          animation: star-twinkle 2s ease-in-out infinite 0.5s;
+          pointer-events: none;
+          mix-blend-mode: screen;
         }
       `}</style>
     </main>
