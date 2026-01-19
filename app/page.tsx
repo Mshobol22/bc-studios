@@ -61,11 +61,13 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200/50 transition-all">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2 cursor-pointer relative" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img 
-            src="/barakah-chaser-logo.png" 
-            alt="BARAKAH CHASER" 
-            className="h-12 w-auto animate-sparkle-logo relative z-10"
-          />
+          <div className="relative inline-block animate-sparkle-logo">
+            <img 
+              src="/barakah-chaser-logo.png" 
+              alt="BARAKAH CHASER" 
+              className="h-12 w-auto relative z-10"
+            />
+          </div>
         </div>
 
         <div className="hidden md:flex items-center gap-8">
@@ -464,33 +466,29 @@ export default function Home() {
         }
         @keyframes sparkle-logo {
           0% { 
-            filter: brightness(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3)) hue-rotate(0deg);
+            filter: brightness(1) hue-rotate(0deg);
           }
           14.28% { 
-            filter: brightness(1.4) drop-shadow(0 0 8px rgba(255, 255, 255, 0.9)) hue-rotate(51deg);
+            filter: brightness(1.4) hue-rotate(51deg);
           }
           28.56% { 
-            filter: brightness(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3)) hue-rotate(102deg);
+            filter: brightness(1) hue-rotate(102deg);
           }
           42.84% { 
-            filter: brightness(1.5) drop-shadow(0 0 10px rgba(255, 255, 255, 1)) hue-rotate(153deg);
+            filter: brightness(1.5) hue-rotate(153deg);
           }
           57.12% { 
-            filter: brightness(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3)) hue-rotate(204deg);
+            filter: brightness(1) hue-rotate(204deg);
           }
           71.4% { 
-            filter: brightness(1.4) drop-shadow(0 0 8px rgba(255, 255, 255, 0.9)) hue-rotate(255deg);
+            filter: brightness(1.4) hue-rotate(255deg);
           }
           85.68% { 
-            filter: brightness(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3)) hue-rotate(306deg);
+            filter: brightness(1) hue-rotate(306deg);
           }
           100% { 
-            filter: brightness(1.3) drop-shadow(0 0 6px rgba(255, 255, 255, 0.7)) hue-rotate(360deg);
+            filter: brightness(1.3) hue-rotate(360deg);
           }
-        }
-        .animate-sparkle-logo {
-          animation: sparkle-logo 3s ease-in-out infinite;
-          position: relative;
         }
         @keyframes star-twinkle {
           0%, 100% { 
@@ -502,6 +500,14 @@ export default function Home() {
             transform: scale(1.2);
           }
         }
+        .animate-sparkle-logo {
+          position: relative;
+          display: inline-block;
+        }
+        .animate-sparkle-logo img {
+          animation: sparkle-logo 3s ease-in-out infinite;
+          filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+        }
         .animate-sparkle-logo::before {
           content: '';
           position: absolute;
@@ -509,14 +515,17 @@ export default function Home() {
           left: 0;
           right: 0;
           bottom: 0;
+          width: 100%;
+          height: 100%;
           background: 
-            radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
-            radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
-            radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.5) 0%, transparent 50%);
+            radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.7) 0%, transparent 50%),
+            radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+            radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.7) 0%, transparent 50%);
           animation: star-twinkle 1.5s ease-in-out infinite;
           pointer-events: none;
           mix-blend-mode: screen;
+          z-index: 20;
         }
         .animate-sparkle-logo::after {
           content: '';
@@ -525,13 +534,16 @@ export default function Home() {
           left: 0;
           right: 0;
           bottom: 0;
+          width: 100%;
+          height: 100%;
           background: 
-            radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
-            radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
-            radial-gradient(circle at 90% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 50%);
+            radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.7) 0%, transparent 50%),
+            radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+            radial-gradient(circle at 90% 50%, rgba(255, 255, 255, 0.8) 0%, transparent 50%);
           animation: star-twinkle 2s ease-in-out infinite 0.5s;
           pointer-events: none;
           mix-blend-mode: screen;
+          z-index: 20;
         }
       `}</style>
     </main>
