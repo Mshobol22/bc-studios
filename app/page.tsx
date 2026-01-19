@@ -286,11 +286,11 @@ export default function Home() {
 
                 {/* PROJECT 2 */}
                 <ProjectCard 
-                    title="AI Dispatcher"
-                    desc="A smart dispatching system for local service businesses, automating scheduling and route optimization."
-                    tag="B2B Tool"
+                    title="Voice2SOP"
+                    desc="An AI powered application that records voice instructions and converts them into structured operational procedures."
+                    tag="AI SaaS"
                     // UPDATE THIS LINK BELOW
-                    link="https://your-dispatcher-app-url.com"
+                    link="https://voice2sop.streamlit.app/"
                 />
             </div>
         </div>
