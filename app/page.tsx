@@ -307,7 +307,7 @@ export default function Home() {
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 text-slate-300">
                             <Mail className="w-5 h-5 text-blue-400" />
-                            <span>hello@bc-studios.net</span>
+                            <span>core@bc_studios.org</span>
                         </div>
                         <div className="flex items-center gap-3 text-slate-300">
                             <MapPin className="w-5 h-5 text-purple-400" />
