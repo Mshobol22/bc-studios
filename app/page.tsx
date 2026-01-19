@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, Code, Zap, Smartphone, Globe, Menu, X, 
-  ExternalLink, ChevronRight, Terminal, Database, Cpu 
+  ExternalLink, ChevronRight, Terminal, Database, Cpu, Send, Mail, MapPin 
 } from "lucide-react"; 
 
-// --- 1. UTILITY COMPONENTS (Typewriter & Smooth Scroll) ---
+// --- 1. UTILITY COMPONENTS ---
 
 const Typewriter = ({ words }: { words: string[] }) => {
   const [index, setIndex] = useState(0);
@@ -59,27 +58,23 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all">
+    <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200/50 transition-all">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/30">
             B
           </div>
           <span className="text-slate-900 font-bold text-lg tracking-tight">BC-Studios</span>
         </div>
 
-        {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
           <button onClick={() => ScrollToSection('services')} className="text-slate-600 hover:text-blue-600 font-medium text-sm transition-colors">Services</button>
           <button onClick={() => ScrollToSection('work')} className="text-slate-600 hover:text-blue-600 font-medium text-sm transition-colors">Work</button>
-          <button onClick={() => ScrollToSection('contact')} className="text-slate-600 hover:text-blue-600 font-medium text-sm transition-colors">Contact</button>
-          <Button onClick={() => ScrollToSection('contact')} size="sm" className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-5">
+          <Button onClick={() => ScrollToSection('contact')} size="sm" className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-5 shadow-md">
             Start Project
           </Button>
         </div>
 
-        {/* Mobile Menu Toggle */}
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)} className="text-slate-600 p-2">
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -87,12 +82,10 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-100 p-4 flex flex-col gap-4 shadow-xl">
           <button onClick={() => { ScrollToSection('services'); setIsOpen(false); }} className="text-left text-slate-600 font-medium py-2">Services</button>
           <button onClick={() => { ScrollToSection('work'); setIsOpen(false); }} className="text-left text-slate-600 font-medium py-2">Work</button>
-          <button onClick={() => { ScrollToSection('contact'); setIsOpen(false); }} className="text-left text-slate-600 font-medium py-2">Contact</button>
           <Button onClick={() => { ScrollToSection('contact'); setIsOpen(false); }} className="w-full bg-blue-600 text-white">Start Project</Button>
         </div>
       )}
@@ -101,16 +94,17 @@ const Navbar = () => {
 };
 
 const TechBadge = ({ text, icon: Icon }: { text: string, icon: any }) => (
-  <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-200 rounded-full mx-4 whitespace-nowrap">
+  <div className="flex items-center gap-2 px-4 py-2 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-full mx-4 whitespace-nowrap shadow-sm">
     <Icon size={16} className="text-blue-600" />
     <span className="text-slate-700 font-semibold text-sm">{text}</span>
   </div>
 );
 
 const ServiceCard = ({ title, desc, icon: Icon }: { title: string; desc: string; icon: any }) => (
-  <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-slate-200 bg-white h-full flex flex-col">
+  <Card className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-slate-100 bg-white/80 backdrop-blur-sm h-full flex flex-col relative overflow-hidden">
+    <div className="absolute top-0 left-0 w-1 h-full bg-blue-600 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
     <CardHeader>
-      <div className="mb-4 w-12 h-12 rounded-xl bg-blue-50 group-hover:bg-blue-600 transition-colors flex items-center justify-center text-blue-600 group-hover:text-white">
+      <div className="mb-4 w-12 h-12 rounded-xl bg-blue-50 group-hover:bg-blue-600 transition-colors flex items-center justify-center text-blue-600 group-hover:text-white shadow-inner">
         <Icon size={24} />
       </div>
       <CardTitle className="text-xl font-bold text-slate-900">{title}</CardTitle>
@@ -122,19 +116,18 @@ const ServiceCard = ({ title, desc, icon: Icon }: { title: string; desc: string;
 );
 
 const ProjectCard = ({ title, desc, tag, link }: { title: string; desc: string; tag: string, link: string }) => (
-  <Card className="overflow-hidden border-slate-200 hover:shadow-2xl transition-all duration-500 hover:border-blue-200 group h-full flex flex-col">
+  <Card className="overflow-hidden border-slate-200 hover:shadow-2xl transition-all duration-500 hover:border-blue-200 group h-full flex flex-col bg-white">
     <div className="h-48 bg-slate-100 relative overflow-hidden flex items-center justify-center group-hover:bg-blue-50 transition-colors">
-        {/* Placeholder for Project Screenshot */}
-        <div className="text-center p-6">
+        <div className="text-center p-6 transform group-hover:scale-105 transition-transform duration-500">
             <Globe className="w-12 h-12 text-slate-300 mx-auto mb-2 group-hover:text-blue-500 transition-colors" />
             <span className="text-slate-400 text-sm font-medium group-hover:text-blue-400">View Application</span>
         </div>
-        <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/5 transition-colors" />
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
     <CardHeader>
       <div className="flex justify-between items-start mb-2">
         <CardTitle className="text-xl font-bold text-slate-900">{title}</CardTitle>
-        <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase tracking-wider">{tag}</span>
+        <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase tracking-wider border border-blue-100">{tag}</span>
       </div>
     </CardHeader>
     <CardContent className="flex-grow">
@@ -154,25 +147,33 @@ const ProjectCard = ({ title, desc, tag, link }: { title: string; desc: string; 
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white font-sans selection:bg-blue-100 pt-16">
+    <main className="min-h-screen bg-slate-50 font-sans selection:bg-blue-100 pt-16 relative">
+      
+      {/* GLOBAL BACKGROUND ELEMENTS (The "Spice") */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Tech Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+        {/* Soft Glowing Orbs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"></div>
+      </div>
+
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 overflow-hidden">
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50 z-0 pointer-events-none"></div>
-        
-        <div className="container mx-auto px-4 text-center z-10 relative">
-          <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 shadow-sm animate-fade-in-up">
+      <section className="relative py-24 lg:py-40 overflow-hidden z-10">
+        <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm animate-fade-in-up hover:scale-105 transition-transform cursor-default">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
-            <span className="text-slate-600 text-sm font-semibold tracking-wide uppercase">
+            <span className="text-slate-600 text-xs font-bold tracking-widest uppercase">
               Accepting New Clients
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-[1.1]">
             We build digital <br className="hidden md:block" />
             <Typewriter words={["Experiences.", "Applications.", "Automation.", "Realities."]} />
           </h1>
@@ -183,22 +184,21 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button onClick={() => ScrollToSection('contact')} size="lg" className="h-12 px-8 text-base bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 rounded-full">
+            <Button onClick={() => ScrollToSection('contact')} size="lg" className="h-14 px-8 text-lg bg-slate-900 hover:bg-slate-800 text-white shadow-xl shadow-slate-900/20 rounded-full transition-all hover:scale-105">
               Start Project
             </Button>
-            <Button onClick={() => ScrollToSection('work')} size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 hover:bg-slate-50 text-slate-700 rounded-full">
+            <Button onClick={() => ScrollToSection('work')} size="lg" variant="outline" className="h-14 px-8 text-lg border-slate-200 bg-white/50 hover:bg-white text-slate-700 rounded-full backdrop-blur-sm transition-all hover:scale-105">
               View Our Work
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Tech Stack Marquee (Infinite Scroll) */}
-      <section className="py-10 border-y border-slate-100 bg-slate-50/50 overflow-hidden">
+      {/* Tech Stack Marquee */}
+      <section className="py-12 border-y border-slate-200/60 bg-white/40 backdrop-blur-sm overflow-hidden z-10 relative">
         <div className="text-center mb-6">
-            <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest">Powered By Modern Tech</p>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Powered By Modern Tech</p>
         </div>
-        {/* Simple CSS Marquee Implementation */}
         <div className="relative flex overflow-x-hidden group">
             <div className="py-2 animate-marquee whitespace-nowrap flex">
                 <TechBadge text="Next.js" icon={Code} />
@@ -210,7 +210,6 @@ export default function Home() {
                 <TechBadge text="Node.js" icon={Terminal} />
                 <TechBadge text="Vercel" icon={Globe} />
             </div>
-            {/* Duplicate for seamless loop */}
             <div className="absolute top-0 py-2 animate-marquee2 whitespace-nowrap flex">
                 <TechBadge text="Next.js" icon={Code} />
                 <TechBadge text="React" icon={Code} />
@@ -225,13 +224,11 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-24 bg-white">
+      <section id="services" className="py-24 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Our Expertise</h2>
-            <p className="text-slate-600 max-w-xl mx-auto">
-                Comprehensive tech solutions tailored for growth.
-            </p>
+            <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -259,13 +256,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio/Work Section */}
-      <section id="work" className="py-24 bg-slate-50">
+      {/* Portfolio Section */}
+      <section id="work" className="py-24 bg-white relative z-10 border-t border-slate-100">
         <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
                 <div>
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Featured Projects</h2>
-                    <p className="text-slate-600 max-w-xl">
+                    <p className="text-slate-600 max-w-xl text-lg">
                         See how we help businesses transform with technology.
                     </p>
                 </div>
@@ -275,67 +272,112 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* PROJECT 1 */}
                 <ProjectCard 
                     title="Resume Roaster AI"
                     desc="An AI-powered application that analyzes resumes and provides brutal, constructive feedback to help job seekers improve."
                     tag="AI SaaS"
-                    // UPDATE THIS LINK BELOW
-                    link="https://roastingresumes.streamlit.app/" 
+                    link="https://your-resume-app-url.com" // UPDATE THIS
                 />
-
-                {/* PROJECT 2 */}
                 <ProjectCard 
                     title="Voice2SOP"
-                    desc="An AI powered application that records voice instructions and converts them into structured operational procedures."
+                    desc="A voice-to-SOP converter that records voice instructions and converts them into structured operational procedures."
                     tag="AI SaaS"
-                    // UPDATE THIS LINK BELOW
-                    link="https://voice2sop.streamlit.app/"
+                    link="https://voice2sop.streamlit.app/" // UPDATE THIS
                 />
             </div>
         </div>
       </section>
 
-      {/* Contact / CTA Section */}
-      <section id="contact" className="py-24 bg-white border-t border-slate-100">
+      {/* CONTACT FORM SECTION (The Functional Upgrade) */}
+      <section id="contact" className="py-24 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="bg-slate-900 rounded-3xl p-8 md:p-16 text-center shadow-2xl overflow-hidden relative">
-             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 z-0"></div>
+          <div className="bg-slate-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
              
-             {/* Decorative circles */}
-             <div className="absolute top-0 right-0 -mr-10 -mt-10 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-20"></div>
-             <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-64 h-64 bg-purple-500 rounded-full blur-3xl opacity-20"></div>
-
-             <div className="relative z-10">
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Ready to launch?</h2>
-                <p className="text-slate-300 mb-8 text-lg max-w-xl mx-auto">
-                  Let's discuss how BC-Studios can bring your vision to life.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button asChild size="lg" className="h-14 px-8 text-lg bg-white text-slate-900 hover:bg-blue-50 rounded-full font-semibold">
-                        <a href="mailto:m@bc-studios.org">
-                            Get in Touch <ArrowRight className="ml-2 h-5 w-5" />
-                        </a>
-                    </Button>
+             {/* Left: Info Side */}
+             <div className="p-10 md:p-12 text-white bg-slate-900 relative w-full md:w-2/5 flex flex-col justify-between">
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
+                
+                <div className="relative z-10">
+                    <h3 className="text-3xl font-bold mb-6">Let's build something great.</h3>
+                    <p className="text-slate-300 mb-8 leading-relaxed">
+                        Ready to start your next project? Fill out the form and our team will get back to you within 24 hours.
+                    </p>
+                    
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3 text-slate-300">
+                            <Mail className="w-5 h-5 text-blue-400" />
+                            <span>hello@bc-studios.net</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-slate-300">
+                            <MapPin className="w-5 h-5 text-purple-400" />
+                            <span>Chicago, IL</span>
+                        </div>
+                    </div>
                 </div>
+
+                <div className="mt-12 relative z-10">
+                    <p className="text-sm text-slate-500">BC-Studios Inc.</p>
+                </div>
+             </div>
+
+             {/* Right: The Form */}
+             <div className="p-10 md:p-12 bg-white w-full md:w-3/5">
+                {/* IMPORTANT: To make this form work, go to https://formspree.io/
+                   1. Create a free account.
+                   2. Create a new form.
+                   3. Copy the URL they give you (e.g., https://formspree.io/f/xyzyxyzy).
+                   4. Replace the "action" URL below.
+                */}
+                <form action="https://formspree.io/f/xnjjdzdy" method="POST" className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Full Name</label>
+                            <input required name="name" type="text" placeholder="John Doe" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Email Address</label>
+                            <input required name="email" type="email" placeholder="john@example.com" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all" />
+                        </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-700">Project Type</label>
+                        <select name="project_type" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all bg-white">
+                            <option>Web Application</option>
+                            <option>Mobile App</option>
+                            <option>AI Integration</option>
+                            <option>Website Redesign</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-700">Project Details</label>
+                        <textarea required name="message" rows={4} placeholder="Tell us about your idea..." className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"></textarea>
+                    </div>
+
+                    <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg shadow-blue-600/20 transition-all hover:-translate-y-1">
+                        Send Message <Send className="ml-2 w-4 h-4" />
+                    </Button>
+                </form>
              </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-slate-50 border-t border-slate-200 text-slate-600 text-sm">
+      <footer className="py-12 bg-slate-50 border-t border-slate-200 text-slate-600 text-sm relative z-10">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <p>&copy; {new Date().getFullYear()} BC-Studios. All rights reserved.</p>
             <div className="flex gap-6">
-                <a href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
-                <a href="#" className="hover:text-blue-600 transition-colors">Terms of Service</a>
-                <a href="#" className="hover:text-blue-600 transition-colors">Twitter</a>
+                <a href="#" className="hover:text-blue-600 transition-colors">Privacy</a>
+                <a href="#" className="hover:text-blue-600 transition-colors">Terms</a>
             </div>
         </div>
       </footer>
 
-      {/* CSS for Marquee Animation */}
+      {/* Styles for Marquee & Grid */}
       <style jsx global>{`
         @keyframes marquee {
           0% { transform: translateX(0%); }
