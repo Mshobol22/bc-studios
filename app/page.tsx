@@ -64,7 +64,7 @@ const Navbar = () => {
           <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/30">
             B
           </div>
-          <span className="text-slate-900 font-bold text-lg tracking-tight">BC-Studios</span>
+          <span className="text-[#006400] font-bold text-lg tracking-tight animate-slide-rainbow">BC-Studios</span>
         </div>
 
         <div className="hidden md:flex items-center gap-8">
@@ -151,6 +151,8 @@ export default function Home() {
       
       {/* GLOBAL BACKGROUND ELEMENTS (The "Spice") */}
       <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Animated Rainbow Background */}
+        <div className="absolute inset-0 animate-rainbow-bg"></div>
         {/* Tech Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         {/* Soft Glowing Orbs */}
@@ -307,7 +309,7 @@ export default function Home() {
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 text-slate-300">
                             <Mail className="w-5 h-5 text-blue-400" />
-                            <span>core@bc_studios.org</span>
+                            <span>core@bc-studios.org</span>
                         </div>
                         <div className="flex items-center gap-3 text-slate-300">
                             <MapPin className="w-5 h-5 text-purple-400" />
@@ -392,6 +394,72 @@ export default function Home() {
         }
         .animate-marquee2 {
           animation: marquee2 25s linear infinite;
+        }
+        @keyframes slide-rainbow {
+          0% { 
+            transform: translateX(0px);
+            color: #006400; /* Deep green */
+          }
+          14.28% { 
+            transform: translateX(10px);
+            color: #FF0000; /* Red */
+          }
+          28.56% { 
+            transform: translateX(0px);
+            color: #FF7F00; /* Orange */
+          }
+          42.84% { 
+            transform: translateX(-10px);
+            color: #FFFF00; /* Yellow */
+          }
+          57.12% { 
+            transform: translateX(0px);
+            color: #00FF00; /* Green */
+          }
+          71.4% { 
+            transform: translateX(10px);
+            color: #0000FF; /* Blue */
+          }
+          85.68% { 
+            transform: translateX(0px);
+            color: #4B0082; /* Indigo */
+          }
+          100% { 
+            transform: translateX(-10px);
+            color: #9400D3; /* Violet */
+          }
+        }
+        .animate-slide-rainbow {
+          animation: slide-rainbow 3s ease-in-out infinite;
+        }
+        @keyframes rainbow-bg {
+          0% { 
+            background-color: rgba(0, 100, 0, 0.05); /* Deep green - very low opacity */
+          }
+          14.28% { 
+            background-color: rgba(255, 0, 0, 0.05); /* Red */
+          }
+          28.56% { 
+            background-color: rgba(255, 127, 0, 0.05); /* Orange */
+          }
+          42.84% { 
+            background-color: rgba(255, 255, 0, 0.05); /* Yellow */
+          }
+          57.12% { 
+            background-color: rgba(0, 255, 0, 0.05); /* Green */
+          }
+          71.4% { 
+            background-color: rgba(0, 0, 255, 0.05); /* Blue */
+          }
+          85.68% { 
+            background-color: rgba(75, 0, 130, 0.05); /* Indigo */
+          }
+          100% { 
+            background-color: rgba(148, 0, 211, 0.05); /* Violet */
+          }
+        }
+        .animate-rainbow-bg {
+          animation: rainbow-bg 8s ease-in-out infinite;
         }
       `}</style>
     </main>
