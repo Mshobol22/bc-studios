@@ -5,7 +5,8 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, Code, Zap, Smartphone, Globe, Menu, X, 
-  ExternalLink, ChevronRight, Terminal, Database, Cpu, Send, Mail, MapPin 
+  ExternalLink, ChevronRight, Terminal, Database, Cpu, Send, Mail, MapPin,
+  Moon, Star
 } from "lucide-react"; 
 
 // --- 1. UTILITY COMPONENTS ---
@@ -60,15 +61,31 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200/50 transition-all">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2 cursor-pointer relative group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          {/* ANIMATED LOGO CONTAINER */}
-          <div className="relative inline-block animate-logo-float">
-            <div className="absolute inset-0 bg-blue-400/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-500"></div>
-            <img 
-              src="/barakah-chaser-logo.png" 
-              alt="BARAKAH CHASER" 
-              className="h-12 w-auto relative z-10 transition-transform duration-300 group-hover:scale-110 animate-sparkle-logo"
-            />
+        <div className="flex items-center gap-3 cursor-pointer relative group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          {/* CODE-GENERATED LOGO CONTAINER */}
+          <div className="relative flex items-center gap-3">
+            {/* Moon Icon with Blue Glow */}
+            <div className="relative">
+              <Moon 
+                size={32} 
+                className="text-blue-600 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)] relative z-10 transition-transform duration-300 group-hover:scale-110" 
+              />
+              
+              {/* Twinkling Stars */}
+              <Star 
+                size={12} 
+                className="absolute -top-1 -right-2 text-yellow-300 fill-yellow-300 animate-star-twinkle-1 z-20" 
+              />
+              <Star 
+                size={10} 
+                className="absolute top-3 -left-2 text-yellow-200 fill-yellow-200 animate-star-twinkle-2 z-20" 
+              />
+            </div>
+            
+            {/* BARAKAH CHASER Text with Rainbow Animation */}
+            <span className="hidden sm:inline bg-gradient-to-r from-violet-500 via-indigo-500 via-blue-500 via-green-500 via-yellow-500 via-orange-500 to-red-500 bg-[length:200%_auto] bg-clip-text text-transparent font-bold text-sm sm:text-base md:text-lg lg:text-xl tracking-tight animate-text-flow">
+              BARAKAH CHASER
+            </span>
           </div>
         </div>
 
@@ -349,6 +366,34 @@ export default function Home() {
         @keyframes star-twinkle {
           0%, 100% { opacity: 0.3; transform: scale(0.8); }
           50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        @keyframes star-twinkle-1 {
+          0%, 100% { opacity: 0.4; transform: scale(0.8) rotate(0deg); }
+          50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
+        }
+        
+        @keyframes star-twinkle-2 {
+          0%, 100% { opacity: 0.3; transform: scale(0.9) rotate(0deg); }
+          50% { opacity: 0.9; transform: scale(1.2) rotate(-180deg); }
+        }
+        
+        .animate-star-twinkle-1 {
+          animation: star-twinkle-1 2s ease-in-out infinite;
+        }
+        
+        .animate-star-twinkle-2 {
+          animation: star-twinkle-2 2.5s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes text-flow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        
+        .animate-text-flow {
+          animation: text-flow 3s ease-in-out infinite;
         }
 
         @keyframes rainbow-bg {
