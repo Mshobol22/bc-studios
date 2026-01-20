@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, Code, Zap, Smartphone, Globe, Menu, X, 
   ExternalLink, ChevronRight, Terminal, Database, Cpu, Send, Mail, MapPin,
-  Moon, Star
+  Star
 } from "lucide-react"; 
 
 // --- 1. UTILITY COMPONENTS ---
@@ -62,29 +62,41 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200/50 transition-all">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3 cursor-pointer relative group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          {/* CODE-GENERATED LOGO CONTAINER */}
-          <div className="relative flex items-center gap-3">
-            {/* Moon Icon with Blue Glow */}
+          {/* LOGO CONTAINER: Image First, Then Text */}
+          <div className="flex items-center gap-3">
+            {/* Image Wrapper with Stars Positioned Around It */}
             <div className="relative">
-              <Moon 
-                size={32} 
-                className="text-blue-600 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)] relative z-10 transition-transform duration-300 group-hover:scale-110" 
+              {/* Twinkling Stars Behind and Around the Image Only */}
+              <Star 
+                size={14} 
+                className="absolute -top-2 -right-3 text-yellow-300 fill-yellow-300 animate-star-twinkle-1 z-0" 
               />
-              
-              {/* Twinkling Stars */}
               <Star 
                 size={12} 
-                className="absolute -top-1 -right-2 text-yellow-300 fill-yellow-300 animate-star-twinkle-1 z-20" 
+                className="absolute top-2 -left-4 text-yellow-200 fill-yellow-200 animate-star-twinkle-2 z-0" 
               />
               <Star 
                 size={10} 
-                className="absolute top-3 -left-2 text-yellow-200 fill-yellow-200 animate-star-twinkle-2 z-20" 
+                className="absolute -bottom-1 -right-2 text-blue-300 fill-blue-300 animate-star-twinkle-1 z-0" 
+                style={{ animationDelay: '1s' }}
+              />
+              <Star 
+                size={11} 
+                className="absolute -top-1 left-1/4 text-purple-300 fill-purple-300 animate-star-twinkle-2 z-0" 
+                style={{ animationDelay: '0.7s' }}
+              />
+              
+              {/* Logo Image - Perfect Circle Badge */}
+              <img 
+                src="/barakah-logo.jpg" 
+                alt="BARAKAH CHASER" 
+                className="h-12 w-12 rounded-full object-cover border-2 border-slate-100 shadow-sm relative z-10 transition-transform duration-300 group-hover:scale-105 animate-moon-glow"
               />
             </div>
             
-            {/* BARAKAH CHASER Text with Rainbow Animation */}
-            <span className="hidden sm:inline bg-gradient-to-r from-violet-500 via-indigo-500 via-blue-500 via-green-500 via-yellow-500 via-orange-500 to-red-500 bg-[length:200%_auto] bg-clip-text text-transparent font-bold text-sm sm:text-base md:text-lg lg:text-xl tracking-tight animate-text-flow">
-              BARAKAH CHASER
+            {/* Brand Name Text */}
+            <span className="font-bold text-xl text-slate-800 tracking-tight hidden sm:inline">
+              BC-Studios
             </span>
           </div>
         </div>
@@ -324,58 +336,29 @@ export default function Home() {
         .animate-marquee { animation: marquee 25s linear infinite; }
         .animate-marquee2 { animation: marquee2 25s linear infinite; }
 
-        /* THE LOGO ANIMATION FIXES */
-        @keyframes logo-float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-5px) rotate(1deg); }
-        }
-        .animate-logo-float {
-          animation: logo-float 4s ease-in-out infinite;
-        }
-
-        @keyframes sparkle-logo {
-          0%, 100% { filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.2)) brightness(1); }
-          50% { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)) brightness(1.1); }
-        }
-        .animate-sparkle-logo {
-          animation: sparkle-logo 3s ease-in-out infinite;
-        }
-
-        /* TWINKLING STARS BACKGROUND FOR LOGO */
-        .animate-logo-float::before {
-          content: '✦';
-          position: absolute;
-          font-size: 8px;
-          color: #3b82f6;
-          top: -5px;
-          right: 0;
-          animation: star-twinkle 2s infinite;
-          opacity: 0.7;
-        }
-        .animate-logo-float::after {
-          content: '✧';
-          position: absolute;
-          font-size: 10px;
-          color: #6366f1;
-          bottom: 5px;
-          left: -10px;
-          animation: star-twinkle 2s infinite 1s;
-          opacity: 0.5;
-        }
-
-        @keyframes star-twinkle {
-          0%, 100% { opacity: 0.3; transform: scale(0.8); }
-          50% { opacity: 1; transform: scale(1.2); }
+        /* MOON GLOW ANIMATION - Pulsing blue/white drop-shadow */
+        @keyframes moon-glow {
+          0%, 100% { 
+            filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+          }
+          50% { 
+            filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.6));
+          }
         }
         
+        .animate-moon-glow {
+          animation: moon-glow 3s ease-in-out infinite;
+        }
+
+        /* TWINKLING STARS - Opacity 0 to 1 */
         @keyframes star-twinkle-1 {
-          0%, 100% { opacity: 0.4; transform: scale(0.8) rotate(0deg); }
-          50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
+          0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+          50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
         }
         
         @keyframes star-twinkle-2 {
-          0%, 100% { opacity: 0.3; transform: scale(0.9) rotate(0deg); }
-          50% { opacity: 0.9; transform: scale(1.2) rotate(-180deg); }
+          0%, 100% { opacity: 0; transform: scale(0.9) rotate(0deg); }
+          50% { opacity: 1; transform: scale(1.1) rotate(-180deg); }
         }
         
         .animate-star-twinkle-1 {
@@ -384,16 +367,6 @@ export default function Home() {
         
         .animate-star-twinkle-2 {
           animation: star-twinkle-2 2.5s ease-in-out infinite 0.5s;
-        }
-
-        @keyframes text-flow {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        
-        .animate-text-flow {
-          animation: text-flow 3s ease-in-out infinite;
         }
 
         @keyframes rainbow-bg {
