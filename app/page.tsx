@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, Code, Zap, Smartphone, Globe, Menu, X, 
   ExternalLink, ChevronRight, Terminal, Database, Cpu, Send, Mail, MapPin,
-  Star
+  Star, MessageCircle
 } from "lucide-react"; 
 
 // --- 1. UTILITY COMPONENTS ---
@@ -40,7 +41,7 @@ const Typewriter = ({ words }: { words: string[] }) => {
   }, [subIndex, index, reverse, words]);
 
   return (
-    <span className="text-blue-600 font-bold">
+    <span className="text-blue-400 font-bold">
       {`${words[index].substring(0, subIndex)}${blink ? "|" : " "}`}
     </span>
   );
@@ -59,7 +60,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200/50 transition-all">
+    <nav className="fixed top-0 w-full z-50 bg-slate-900/80 backdrop-blur-lg border-b border-slate-800/50 transition-all">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3 cursor-pointer relative group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           {/* LOGO CONTAINER: Image First, Then Text */}
@@ -90,37 +91,40 @@ const Navbar = () => {
               <img 
                 src="/barakah-logo.jpg" 
                 alt="BARAKAH CHASER" 
-                className="h-12 w-12 rounded-full object-cover border-2 border-slate-100 shadow-sm relative z-10 transition-transform duration-300 group-hover:scale-105 animate-moon-glow"
+                className="h-12 w-12 rounded-full object-cover border-2 border-slate-700 shadow-sm relative z-10 transition-transform duration-300 group-hover:scale-105 animate-moon-glow"
               />
             </div>
             
             {/* Brand Name Text */}
-            <span className="font-bold text-xl text-slate-800 tracking-tight hidden sm:inline">
+            <span className="font-bold text-xl text-white tracking-tight hidden sm:inline">
               BC-Studios
             </span>
           </div>
         </div>
 
         <div className="hidden md:flex items-center gap-8">
-          <button onClick={() => ScrollToSection('services')} className="text-slate-600 hover:text-blue-600 font-medium text-sm transition-colors">Services</button>
-          <button onClick={() => ScrollToSection('work')} className="text-slate-600 hover:text-blue-600 font-medium text-sm transition-colors">Work</button>
-          <Button onClick={() => ScrollToSection('contact')} size="sm" className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-5 shadow-md">
+          <button onClick={() => ScrollToSection('about')} className="text-slate-300 hover:text-white font-medium text-sm transition-colors">About</button>
+          <button onClick={() => ScrollToSection('services')} className="text-slate-300 hover:text-white font-medium text-sm transition-colors">Services</button>
+          <button onClick={() => ScrollToSection('work')} className="text-slate-300 hover:text-white font-medium text-sm transition-colors">Work</button>
+          <Button onClick={() => ScrollToSection('contact')} size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 shadow-md">
             Start Project
           </Button>
         </div>
 
         <div className="md:hidden">
-          <button onClick={() => setIsOpen(!isOpen)} className="text-slate-600 p-2">
+          <button onClick={() => setIsOpen(!isOpen)} className="text-slate-300 p-2">
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
       {isOpen && (
-        <div className="md:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-100 p-4 flex flex-col gap-4 shadow-xl">
-          <button onClick={() => { ScrollToSection('services'); setIsOpen(false); }} className="text-left text-slate-600 font-medium py-2">Services</button>
-          <button onClick={() => { ScrollToSection('work'); setIsOpen(false); }} className="text-left text-slate-600 font-medium py-2">Work</button>
-          <Button onClick={() => { ScrollToSection('contact'); setIsOpen(false); }} className="w-full bg-blue-600 text-white">Start Project</Button>
+        <div className="md:hidden absolute top-16 left-0 w-full bg-slate-900 border-b border-slate-800 p-4 flex flex-col gap-4 shadow-xl">
+          <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">Home</button>
+          <button onClick={() => { ScrollToSection('about'); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">About</button>
+          <button onClick={() => { ScrollToSection('services'); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">Services</button>
+          <button onClick={() => { ScrollToSection('work'); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">Work</button>
+          <button onClick={() => { ScrollToSection('contact'); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">Contact</button>
         </div>
       )}
     </nav>
@@ -128,47 +132,48 @@ const Navbar = () => {
 };
 
 const TechBadge = ({ text, icon: Icon }: { text: string, icon: any }) => (
-  <div className="flex items-center gap-2 px-4 py-2 bg-white/50 backdrop-blur-sm border border-slate-200/60 rounded-full mx-4 whitespace-nowrap shadow-sm">
-    <Icon size={16} className="text-blue-600" />
-    <span className="text-slate-700 font-semibold text-sm">{text}</span>
+  <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/50 backdrop-blur-sm border border-slate-700/60 rounded-full mx-4 whitespace-nowrap shadow-sm">
+    <Icon size={16} className="text-blue-400" />
+    <span className="text-slate-300 font-semibold text-sm">{text}</span>
   </div>
 );
 
 const ServiceCard = ({ title, desc, icon: Icon }: { title: string; desc: string; icon: any }) => (
-  <Card className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-slate-100 bg-white/80 backdrop-blur-sm h-full flex flex-col relative overflow-hidden">
+  <Card className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-slate-800 bg-slate-900/80 backdrop-blur-sm h-full flex flex-col relative overflow-hidden">
     <div className="absolute top-0 left-0 w-1 h-full bg-blue-600 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
     <CardHeader>
-      <div className="mb-4 w-12 h-12 rounded-xl bg-blue-50 group-hover:bg-blue-600 transition-colors flex items-center justify-center text-blue-600 group-hover:text-white shadow-inner">
+      <div className="mb-4 w-12 h-12 rounded-xl bg-blue-950 group-hover:bg-blue-600 transition-colors flex items-center justify-center text-blue-400 group-hover:text-white shadow-inner">
         <Icon size={24} />
       </div>
-      <CardTitle className="text-xl font-bold text-slate-900">{title}</CardTitle>
+      <CardTitle className="text-xl font-bold text-white">{title}</CardTitle>
     </CardHeader>
     <CardContent className="flex-grow">
-      <p className="text-slate-600 leading-relaxed">{desc}</p>
+      <p className="text-slate-300 leading-relaxed">{desc}</p>
     </CardContent>
   </Card>
 );
 
-const ProjectCard = ({ title, desc, tag, link }: { title: string; desc: string; tag: string, link: string }) => (
-  <Card className="overflow-hidden border-slate-200 hover:shadow-2xl transition-all duration-500 hover:border-blue-200 group h-full flex flex-col bg-white">
-    <div className="h-48 bg-slate-100 relative overflow-hidden flex items-center justify-center group-hover:bg-blue-50 transition-colors">
-        <div className="text-center p-6 transform group-hover:scale-105 transition-transform duration-500">
-            <Globe className="w-12 h-12 text-slate-300 mx-auto mb-2 group-hover:text-blue-500 transition-colors" />
-            <span className="text-slate-400 text-sm font-medium group-hover:text-blue-400">View Application</span>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+const ProjectCard = ({ title, desc, tag, link, imageUrl }: { title: string; desc: string; tag: string, link: string, imageUrl: string }) => (
+  <Card className="overflow-hidden border-slate-800 hover:shadow-2xl transition-all duration-500 hover:border-blue-600/50 group h-full flex flex-col bg-slate-900">
+    <div className="h-48 relative overflow-hidden">
+      <img 
+        src={imageUrl} 
+        alt={title}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
     <CardHeader>
       <div className="flex justify-between items-start mb-2">
-        <CardTitle className="text-xl font-bold text-slate-900">{title}</CardTitle>
-        <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded uppercase tracking-wider border border-blue-100">{tag}</span>
+        <CardTitle className="text-xl font-bold text-white">{title}</CardTitle>
+        <span className="px-2 py-1 bg-blue-950 text-blue-400 text-xs font-bold rounded uppercase tracking-wider border border-blue-800">{tag}</span>
       </div>
     </CardHeader>
     <CardContent className="flex-grow">
-      <p className="text-slate-600">{desc}</p>
+      <p className="text-slate-300">{desc}</p>
     </CardContent>
     <CardFooter>
-        <Button asChild className="w-full gap-2 group-hover:bg-blue-600 group-hover:text-white transition-all" variant="outline">
+        <Button asChild className="w-full gap-2 bg-blue-600 hover:bg-blue-700 text-white transition-all" variant="default">
             <a href={link} target="_blank" rel="noopener noreferrer">
                 Live Demo <ExternalLink size={16} />
             </a>
@@ -177,58 +182,308 @@ const ProjectCard = ({ title, desc, tag, link }: { title: string; desc: string; 
   </Card>
 );
 
+// --- CHAT WIDGET COMPONENT ---
+const ChatWidget = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Array<{ type: 'bot' | 'user', text: string }>>([
+    { type: 'bot', text: "Hi! I'm the BC-Studios assistant. How can I help you today?" }
+  ]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [chatMode, setChatMode] = useState<'options' | 'inputting_project' | 'final_cta'>('options');
+  const [projectDescription, setProjectDescription] = useState('');
+
+  const quickQuestions = [
+    "What services do you offer?",
+    "How much does a project cost?",
+    "I want to start a project."
+  ];
+
+  const responses: Record<string, string> = {
+    "What services do you offer?": "We offer Web Development (Next.js websites), Mobile Apps (iOS/Android), AI Integration (LLM automation), and SaaS Engineering (end-to-end software development). Would you like details on any specific service?",
+    "How much does a project cost?": "Project costs vary based on scope and complexity. We provide custom quotes after understanding your needs. Typically, websites start around $5,000-$15,000, while SaaS platforms range from $20,000-$100,000+. Let's discuss your project to get an accurate estimate!",
+    "I want to start a project.": "Great! Let's get started. You can fill out our contact form on this page, email us at core@bc-studios.org, or tell me more about your project here and I'll help guide you through the next steps."
+  };
+
+  // Helper function to render messages with clickable emails
+  const renderMessage = (text: string) => {
+    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi;
+    const parts = text.split(emailRegex);
+    
+    return parts.map((part, idx) => {
+      if (emailRegex.test(part)) {
+        return (
+          <a
+            key={idx}
+            href={`mailto:${part}`}
+            className="underline text-blue-400 hover:text-blue-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {part}
+          </a>
+        );
+      }
+      return <span key={idx}>{part}</span>;
+    });
+  };
+
+  const handleQuestionClick = (question: string) => {
+    // Add user message
+    setMessages(prev => [...prev, { type: 'user', text: question }]);
+    setIsTyping(true);
+
+    // Special handling for "I want to start a project"
+    if (question === "I want to start a project.") {
+      setTimeout(() => {
+        setIsTyping(false);
+        setMessages(prev => [...prev, { type: 'bot', text: responses[question] }]);
+        setChatMode('inputting_project');
+      }, 1000);
+    } else {
+      // Simulate typing delay for other questions
+      setTimeout(() => {
+        setIsTyping(false);
+        setMessages(prev => [...prev, { type: 'bot', text: responses[question] || "I'm here to help! Feel free to ask more questions." }]);
+      }, 1000);
+    }
+  };
+
+  const handleProjectSubmit = () => {
+    if (!projectDescription.trim()) return;
+
+    // Add user message with description
+    setMessages(prev => [...prev, { type: 'user', text: projectDescription }]);
+    setProjectDescription('');
+    setIsTyping(true);
+
+    // Bot responds with email CTA
+    setTimeout(() => {
+      setIsTyping(false);
+      setMessages(prev => [...prev, { 
+        type: 'bot', 
+        text: "Thanks! I've prepared an email with those details for our team. Click below to send it." 
+      }]);
+      setChatMode('final_cta');
+    }, 1000);
+  };
+
+  const handleChatToggle = () => {
+    const newIsOpen = !isOpen;
+    setIsOpen(newIsOpen);
+    
+    // Reset state when closing
+    if (!newIsOpen) {
+      setChatMode('options');
+      setProjectDescription('');
+      setMessages([{ type: 'bot', text: "Hi! I'm the BC-Studios assistant. How can I help you today?" }]);
+    }
+  };
+
+  const getEmailLink = () => {
+    // Find the last user message (should be the project description)
+    const userMessages = messages.filter(m => m.type === 'user' && m.text !== "I want to start a project.");
+    const projectDescription = userMessages.length > 0 
+      ? userMessages[userMessages.length - 1].text 
+      : '';
+    const encodedDescription = encodeURIComponent(projectDescription);
+    return `mailto:core@bc-studios.org?subject=New Project Inquiry&body=${encodedDescription}`;
+  };
+
+  return (
+    <>
+      {/* Chat Window */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-24 right-6 w-80 sm:w-96 h-[500px] bg-slate-900/95 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
+          >
+            {/* Chat Header */}
+            <div className="bg-slate-800/50 border-b border-slate-700 px-4 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                  <MessageCircle className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm">BC-Studios Assistant</p>
+                  <p className="text-slate-400 text-xs">Online</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-slate-400 hover:text-white transition-colors p-1"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Chat Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {messages.map((msg, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+                      msg.type === 'user'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-slate-800 text-slate-200'
+                    }`}
+                  >
+                    <p className="text-sm leading-relaxed">{renderMessage(msg.text)}</p>
+                  </div>
+                </motion.div>
+              ))}
+              
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="bg-slate-800 rounded-2xl px-4 py-2">
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Dynamic Footer Based on Chat Mode */}
+            {!isTyping && chatMode === 'options' && (
+              <div className="border-t border-slate-700 p-4 space-y-2 bg-slate-800/30">
+                <p className="text-slate-400 text-xs mb-2">Quick questions:</p>
+                {quickQuestions.map((question, idx) => (
+                  <motion.button
+                    key={idx}
+                    onClick={() => handleQuestionClick(question)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full text-left bg-slate-800/50 hover:bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors"
+                  >
+                    {question}
+                  </motion.button>
+                ))}
+              </div>
+            )}
+
+            {!isTyping && chatMode === 'inputting_project' && (
+              <div className="border-t border-slate-700 p-4 space-y-2 bg-slate-800/30">
+                <p className="text-slate-400 text-xs mb-2">Tell us about your project:</p>
+                <textarea
+                  value={projectDescription}
+                  onChange={(e) => setProjectDescription(e.target.value)}
+                  placeholder="Describe your project idea, goals, timeline, and any specific requirements..."
+                  className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white placeholder:text-slate-400 resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm min-h-[100px]"
+                  rows={4}
+                />
+                <motion.button
+                  onClick={handleProjectSubmit}
+                  disabled={!projectDescription.trim()}
+                  whileHover={{ scale: projectDescription.trim() ? 1.02 : 1 }}
+                  whileTap={{ scale: projectDescription.trim() ? 0.98 : 1 }}
+                  className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg px-4 py-2 text-sm transition-colors ${
+                    !projectDescription.trim() ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  Submit Description
+                </motion.button>
+              </div>
+            )}
+
+            {!isTyping && chatMode === 'final_cta' && (
+              <div className="border-t border-slate-700 p-4 bg-slate-800/30">
+                <motion.a
+                  href={getEmailLink()}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg px-4 py-3 text-sm transition-colors flex items-center justify-center gap-2"
+                >
+                  <Mail size={16} />
+                  Click to Compose Email to Core Team
+                </motion.a>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Message Button */}
+      <motion.button
+        onClick={handleChatToggle}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="fixed bottom-6 right-6 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center z-50 transition-colors"
+        aria-label="Open chat"
+      >
+        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
+      </motion.button>
+    </>
+  );
+};
+
 // --- 3. MAIN PAGE COMPONENT ---
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-50 font-sans selection:bg-blue-100 pt-16 relative">
-      
-      {/* GLOBAL BACKGROUND ELEMENTS */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 animate-rainbow-bg"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"></div>
-      </div>
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 font-sans selection:bg-blue-900 pt-16 relative overflow-x-hidden">
 
       <Navbar />
       
       {/* Hero Section */}
       <section className="relative py-24 lg:py-40 overflow-hidden z-10">
         <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm animate-fade-in-up hover:scale-105 transition-transform cursor-default">
+          <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 shadow-sm animate-fade-in-up hover:scale-105 transition-transform cursor-default backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
-            <span className="text-slate-600 text-xs font-bold tracking-widest uppercase">
+            <span className="text-slate-300 text-xs font-bold tracking-widest uppercase">
               Accepting New Clients
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-[1.1]">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8 leading-[1.1]">
             We build digital <br className="hidden md:block" />
             <Typewriter words={["Experiences.", "Applications.", "Automation.", "Realities."]} />
           </h1>
           
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
             BC-Studios is a premier creative technology firm delivering pixel-perfect websites, 
             powerful AI tools, and scalable software solutions.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button onClick={() => ScrollToSection('contact')} size="lg" className="h-14 px-8 text-lg bg-slate-900 hover:bg-slate-800 text-white shadow-xl shadow-slate-900/20 rounded-full transition-all hover:scale-105">
+            <Button onClick={() => ScrollToSection('contact')} size="lg" className="h-14 px-8 text-lg bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-900/20 rounded-full transition-all hover:scale-105">
               Start Project
             </Button>
-            <Button onClick={() => ScrollToSection('work')} size="lg" variant="outline" className="h-14 px-8 text-lg border-slate-200 bg-white/50 hover:bg-white text-slate-700 rounded-full backdrop-blur-sm transition-all hover:scale-105">
+            <Button onClick={() => ScrollToSection('work')} size="lg" variant="outline" className="h-14 px-8 text-lg border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-white rounded-full backdrop-blur-sm transition-all hover:scale-105">
               View Our Work
             </Button>
           </div>
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" className="relative py-24 z-10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">About BC-Studios</h2>
+            <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-8"></div>
+            <p className="text-lg text-slate-300 leading-relaxed">
+              We are a Chicago-based creative technology firm. We bridge the gap between imagination and engineering. 
+              From AI-driven SaaS platforms to pixel-perfect web experiences, we build digital assets that drive business growth.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Tech Stack Marquee */}
-      <section className="py-12 border-y border-slate-200/60 bg-white/40 backdrop-blur-sm overflow-hidden z-10 relative">
+      <section className="py-12 border-y border-slate-800/60 bg-slate-900/40 backdrop-blur-sm overflow-hidden z-10 relative">
         <div className="text-center mb-6">
             <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Powered By Modern Tech</p>
         </div>
@@ -260,7 +515,7 @@ export default function Home() {
       <section id="services" className="py-24 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Our Expertise</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our Expertise</h2>
             <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
           </div>
 
@@ -274,21 +529,33 @@ export default function Home() {
       </section>
 
       {/* Portfolio Section */}
-      <section id="work" className="py-24 bg-white relative z-10 border-t border-slate-100">
+      <section id="work" className="py-24 bg-slate-900/50 relative z-10 border-t border-slate-800">
         <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
                 <div>
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Featured Projects</h2>
-                    <p className="text-slate-600 max-w-xl text-lg">See how we help businesses transform with technology.</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Featured Projects</h2>
+                    <p className="text-slate-300 max-w-xl text-lg">See how we help businesses transform with technology.</p>
                 </div>
-                <Button variant="ghost" className="text-blue-600 hover:text-blue-700 font-semibold gap-1">
+                <Button variant="ghost" className="text-blue-400 hover:text-blue-300 font-semibold gap-1">
                     View All Projects <ChevronRight size={16} />
                 </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <ProjectCard title="Resume Roaster AI" desc="An AI that analyzes resumes and provides constructive feedback." tag="AI SaaS" link="https://roastingresumes.streamlit.app/" />
-                <ProjectCard title="Voice2SOP" desc="Converts voice instructions into structured operational procedures." tag="AI SaaS" link="https://voice2sop.streamlit.app/" />
+                <ProjectCard 
+                  title="Resume Roaster AI" 
+                  desc="An AI-powered application that analyzes resumes and provides brutal, constructive feedback to help job seekers improve." 
+                  tag="AI SaaS" 
+                  link="https://roastingresumes.streamlit.app/"
+                  imageUrl="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+                />
+                <ProjectCard 
+                  title="Voice2SOP" 
+                  desc="A voice-to-SOP converter that records voice instructions and converts them into structured operational procedures." 
+                  tag="AI SaaS" 
+                  link="https://voice2sop.streamlit.app/"
+                  imageUrl="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+                />
             </div>
         </div>
       </section>
@@ -296,8 +563,8 @@ export default function Home() {
       {/* Contact Section */}
       <section id="contact" className="py-24 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="bg-slate-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
-             <div className="p-10 md:p-12 text-white bg-slate-900 relative w-full md:w-2/5 flex flex-col justify-between">
+          <div className="bg-gradient-to-b from-slate-950/90 to-slate-900/90 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row backdrop-blur-sm">
+             <div className="p-10 md:p-12 text-white bg-slate-900/80 backdrop-blur-sm relative w-full md:w-2/5 flex flex-col justify-between">
                 <div className="relative z-10">
                     <h3 className="text-3xl font-bold mb-6">Let's build something great.</h3>
                     <p className="text-slate-300 mb-8 leading-relaxed">Ready to start? Get back to you within 24 hours.</p>
@@ -307,15 +574,23 @@ export default function Home() {
                     </div>
                 </div>
              </div>
-             <div className="p-10 md:p-12 bg-white w-full md:w-3/5">
+             <div className="p-10 md:p-12 bg-slate-800/80 backdrop-blur-sm w-full md:w-3/5">
                 <form action="https://formspree.io/f/xnjjdzdy" method="POST" className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input required name="name" type="text" placeholder="Full Name" className="w-full px-4 py-3 rounded-lg border border-slate-200" />
-                        <input required name="email" type="email" placeholder="Email Address" className="w-full px-4 py-3 rounded-lg border border-slate-200" />
+                        <input required name="name" type="text" placeholder="Full Name" className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all" />
+                        <input required name="email" type="email" placeholder="Email Address" className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all" />
                     </div>
-                    <select name="project_type" className="w-full px-4 py-3 rounded-lg border border-slate-200"><option>Web Application</option><option>Mobile App</option><option>AI Integration</option></select>
-                    <textarea required name="message" rows={4} placeholder="Project Details" className="w-full px-4 py-3 rounded-lg border border-slate-200 resize-none"></textarea>
-                    <Button className="w-full h-12 bg-blue-600 text-white font-bold rounded-lg shadow-lg">Send Message <Send className="ml-2 w-4 h-4" /></Button>
+                    <select name="project_type" className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all">
+                      <option>Web Application</option>
+                      <option>Mobile App</option>
+                      <option>AI Integration</option>
+                      <option>Website Redesign</option>
+                      <option>Other</option>
+                    </select>
+                    <textarea required name="message" rows={4} placeholder="Project Details" className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white placeholder:text-slate-400 resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"></textarea>
+                    <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg shadow-blue-600/20 transition-all hover:-translate-y-1">
+                      Send Message <Send className="ml-2 w-4 h-4" />
+                    </Button>
                 </form>
              </div>
           </div>
@@ -323,11 +598,18 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-slate-50 border-t border-slate-200 text-slate-600 text-sm relative z-10">
+      <footer className="py-12 bg-gradient-to-b from-slate-950/80 to-slate-900/80 backdrop-blur-sm border-t border-slate-800 text-slate-400 text-sm relative z-10">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <p>&copy; {new Date().getFullYear()} BC-Studios. All rights reserved.</p>
+            <div className="flex gap-6">
+                <a href="#" className="hover:text-white transition-colors">Privacy</a>
+                <a href="#" className="hover:text-white transition-colors">Terms</a>
+            </div>
         </div>
       </footer>
+
+      {/* Chat Widget */}
+      <ChatWidget />
 
       {/* REFINED ANIMATION STYLES */}
       <style jsx global>{`
@@ -336,7 +618,7 @@ export default function Home() {
         .animate-marquee { animation: marquee 25s linear infinite; }
         .animate-marquee2 { animation: marquee2 25s linear infinite; }
 
-        /* MOON GLOW ANIMATION - Pulsing blue/white drop-shadow */
+        /* MOON GLOW ANIMATION - Pulsing blue/white drop-shadow (for logo) */
         @keyframes moon-glow {
           0%, 100% { 
             filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
@@ -369,12 +651,34 @@ export default function Home() {
           animation: star-twinkle-2 2.5s ease-in-out infinite 0.5s;
         }
 
-        @keyframes rainbow-bg {
-          0% { background-color: rgba(59, 130, 246, 0.03); }
-          50% { background-color: rgba(147, 51, 234, 0.03); }
-          100% { background-color: rgba(59, 130, 246, 0.03); }
+        /* STARRY SKY ANIMATIONS */
+        @keyframes starry-sky {
+          0% { background-position: 0% 0%; }
+          100% { background-position: 100% 100%; }
         }
-        .animate-rainbow-bg { animation: rainbow-bg 8s ease-in-out infinite; }
+        
+        .animate-starry-sky {
+          animation: starry-sky 20s linear infinite;
+        }
+        
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 1; }
+        }
+        
+        .animate-twinkle {
+          animation: twinkle 3s ease-in-out infinite;
+        }
+        
+        /* MOON GLOW EFFECT */
+        .moon-glow {
+          background: radial-gradient(circle, rgba(255, 255, 200, 0.3) 0%, rgba(255, 255, 180, 0.2) 30%, transparent 70%);
+          filter: blur(60px);
+        }
+        
+        .moon-glow-inner {
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+        }
       `}</style>
     </main>
   );
