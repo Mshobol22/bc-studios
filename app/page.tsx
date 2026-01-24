@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, Code, Zap, Smartphone, Globe, Menu, X, 
   ExternalLink, ChevronRight, Terminal, Database, Cpu, Send, Mail, MapPin,
-  Star, MessageCircle
-} from "lucide-react"; 
+  MessageCircle
+} from "lucide-react";
+import Header from "@/components/Header"; 
 
 // --- 1. UTILITY COMPONENTS ---
 
@@ -55,81 +56,6 @@ const ScrollToSection = (id: string) => {
 };
 
 // --- 2. SUB-COMPONENTS ---
-
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <nav className="fixed top-0 w-full z-50 bg-slate-900/80 backdrop-blur-lg border-b border-slate-800/50 transition-all">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3 cursor-pointer relative group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          {/* LOGO CONTAINER: Image First, Then Text */}
-          <div className="flex items-center gap-3">
-            {/* Image Wrapper with Stars Positioned Around It */}
-            <div className="relative">
-              {/* Twinkling Stars Behind and Around the Image Only */}
-              <Star 
-                size={14} 
-                className="absolute -top-2 -right-3 text-yellow-300 fill-yellow-300 animate-star-twinkle-1 z-0" 
-              />
-              <Star 
-                size={12} 
-                className="absolute top-2 -left-4 text-yellow-200 fill-yellow-200 animate-star-twinkle-2 z-0" 
-              />
-              <Star 
-                size={10} 
-                className="absolute -bottom-1 -right-2 text-blue-300 fill-blue-300 animate-star-twinkle-1 z-0" 
-                style={{ animationDelay: '1s' }}
-              />
-              <Star 
-                size={11} 
-                className="absolute -top-1 left-1/4 text-purple-300 fill-purple-300 animate-star-twinkle-2 z-0" 
-                style={{ animationDelay: '0.7s' }}
-              />
-              
-              {/* Logo Image - Perfect Circle Badge */}
-              <img 
-                src="/barakah-logo.jpg" 
-                alt="BARAKAH CHASER" 
-                className="h-12 w-12 rounded-full object-cover border-2 border-slate-700 shadow-sm relative z-10 transition-transform duration-300 group-hover:scale-105 animate-moon-glow"
-              />
-            </div>
-            
-            {/* Brand Name Text */}
-            <span className="font-bold text-xl text-white tracking-tight hidden sm:inline">
-              BC-Studios
-            </span>
-          </div>
-        </div>
-
-        <div className="hidden md:flex items-center gap-8">
-          <button onClick={() => ScrollToSection('about')} className="text-slate-300 hover:text-white font-medium text-sm transition-colors">About</button>
-          <button onClick={() => ScrollToSection('services')} className="text-slate-300 hover:text-white font-medium text-sm transition-colors">Services</button>
-          <button onClick={() => ScrollToSection('work')} className="text-slate-300 hover:text-white font-medium text-sm transition-colors">Work</button>
-          <Button onClick={() => ScrollToSection('contact')} size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 shadow-md">
-            Start Project
-          </Button>
-        </div>
-
-        <div className="md:hidden">
-          <button onClick={() => setIsOpen(!isOpen)} className="text-slate-300 p-2">
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
-
-      {isOpen && (
-        <div className="md:hidden absolute top-16 left-0 w-full bg-slate-900 border-b border-slate-800 p-4 flex flex-col gap-4 shadow-xl">
-          <button onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">Home</button>
-          <button onClick={() => { ScrollToSection('about'); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">About</button>
-          <button onClick={() => { ScrollToSection('services'); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">Services</button>
-          <button onClick={() => { ScrollToSection('work'); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">Work</button>
-          <button onClick={() => { ScrollToSection('contact'); setIsOpen(false); }} className="text-left text-slate-300 hover:text-white font-medium py-2">Contact</button>
-        </div>
-      )}
-    </nav>
-  );
-};
 
 const TechBadge = ({ text, icon: Icon }: { text: string, icon: any }) => (
   <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/50 backdrop-blur-sm border border-slate-700/60 rounded-full mx-4 whitespace-nowrap shadow-sm">
@@ -432,7 +358,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 font-sans selection:bg-blue-900 pt-16 relative overflow-x-hidden">
 
-      <Navbar />
+      <Header />
       
       {/* Hero Section */}
       <section className="relative py-24 lg:py-40 overflow-hidden z-10">
