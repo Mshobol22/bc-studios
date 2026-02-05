@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -28,7 +27,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Calendar } from "lucide-react";
 
 // --- Pricing constants ---
 const PLATFORM_BASE: Record<string, number> = {
@@ -36,9 +35,12 @@ const PLATFORM_BASE: Record<string, number> = {
   web: 4_000,
   ai: 6_000,
 };
-const URGENCY_MULTIPLIER = 0.003; // 0 → 1x, 100 → 1.3x
+const URGENCY_MULTIPLIER = 0.003;
 const AI_ADDON = 2_000;
-const RANGE_BUFFER = 0.15; // ±15% for "range"
+const RANGE_BUFFER = 0.15;
+
+const CALENDLY_STRATEGY_URL =
+  process.env.NEXT_PUBLIC_CALENDLY_STRATEGY_URL || "https://calendly.com";
 
 // --- Form schema ---
 const quoteFormSchema = z.object({
@@ -56,7 +58,6 @@ const leadCaptureSchema = z.object({
 export type QuoteFormValues = z.infer<typeof quoteFormSchema>;
 export type LeadCaptureValues = z.infer<typeof leadCaptureSchema>;
 
-/** Saved to localStorage under "pending_proposal" for Magic Bridge → dashboard */
 export type PendingProposal = {
   name: string;
   email: string;
@@ -90,6 +91,22 @@ function getProjectTypeLabel(platform: QuoteFormValues["platform"]): string {
   return platform === "ai" ? "AI Automation" : platform === "mobile" ? "Mobile App" : "Web App";
 }
 
+/**
+ * Stub: eventually send lead + quote context to Supabase/Resend.
+ * Call this when the user submits the "Where should we send your estimate?" form.
+ */
+async function handleLeadSubmit(
+  lead: LeadCaptureValues,
+  quote: QuoteFormValues,
+  estimate: { low: number; high: number }
+): Promise<void> {
+  // TODO: send to Supabase (e.g. leads table) and/or Resend (email)
+  await new Promise((r) => setTimeout(r, 100));
+  if (process.env.NODE_ENV === "development") {
+    console.log("[handleLeadSubmit] Lead:", lead, "Quote:", quote, "Estimate:", estimate);
+  }
+}
+
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -104,11 +121,11 @@ const item = {
 };
 
 export function QuoteCalculator() {
-  const router = useRouter();
   const [leadDialogOpen, setLeadDialogOpen] = useState(false);
-  const [finalBreakdownOpen, setFinalBreakdownOpen] = useState(false);
+  const [leadSubmitted, setLeadSubmitted] = useState(false);
   const [capturedLead, setCapturedLead] = useState<LeadCaptureValues | null>(null);
   const [submittedQuote, setSubmittedQuote] = useState<QuoteFormValues | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<QuoteFormValues>({
     resolver: zodResolver(quoteFormSchema),
@@ -137,13 +154,22 @@ export function QuoteCalculator() {
   const onGetProposal = () => {
     form.handleSubmit((values) => {
       setSubmittedQuote(values);
+      setLeadSubmitted(false);
       setLeadDialogOpen(true);
     })();
   };
 
-  const onLeadSubmit = leadForm.handleSubmit((data) => {
+  const onLeadSubmit = leadForm.handleSubmit(async (data) => {
     if (!submittedQuote) return;
-    const estimate = computeEstimate(submittedQuote);
+    setIsSubmitting(true);
+    const estimateResult = computeEstimate(submittedQuote);
+    try {
+      await handleLeadSubmit(data, submittedQuote, estimateResult);
+    } finally {
+      setIsSubmitting(false);
+    }
+    setCapturedLead(data);
+    setLeadSubmitted(true);
     const pending: PendingProposal = {
       name: data.name,
       email: data.email,
@@ -151,23 +177,24 @@ export function QuoteCalculator() {
       urgency: submittedQuote.urgency[0],
       aiIntegration: submittedQuote.aiIntegration,
       projectDescription: submittedQuote.projectDescription ?? "",
-      estimateLow: estimate.low,
-      estimateHigh: estimate.high,
+      estimateLow: estimateResult.low,
+      estimateHigh: estimateResult.high,
       projectTypeLabel: getProjectTypeLabel(submittedQuote.platform),
     };
     if (typeof window !== "undefined") {
       localStorage.setItem(PENDING_PROPOSAL_KEY, JSON.stringify(pending));
     }
-    setLeadDialogOpen(false);
-    router.push("/dashboard");
   });
 
-  const closeFinalBreakdown = () => {
-    setFinalBreakdownOpen(false);
+  const closeLeadDialog = () => {
+    setLeadDialogOpen(false);
+    setLeadSubmitted(false);
     setCapturedLead(null);
     setSubmittedQuote(null);
     leadForm.reset();
   };
+
+  const finalEstimate = submittedQuote ? computeEstimate(submittedQuote) : null;
 
   return (
     <>
@@ -291,6 +318,7 @@ export function QuoteCalculator() {
             type="button"
             onClick={onGetProposal}
             className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white rounded-lg py-6 text-base font-semibold gap-2"
+            data-id="submit-quote"
           >
             <Sparkles className="size-5" />
             Get final proposal
@@ -298,118 +326,120 @@ export function QuoteCalculator() {
         </CardContent>
       </Card>
 
-      {/* Lead capture dialog */}
-      <Dialog open={leadDialogOpen} onOpenChange={setLeadDialogOpen}>
+      {/* Lead gate: "Where should we send your estimate?" → then show price + CTA */}
+      <Dialog open={leadDialogOpen} onOpenChange={(open) => !open && closeLeadDialog()}>
         <DialogContent
           showClose={true}
           className="border-slate-700 bg-slate-900 text-white"
           onPointerDownOutside={(e) => e.preventDefault()}
         >
-          <DialogHeader>
-            <DialogTitle className="text-white">Almost there</DialogTitle>
-            <DialogDescription className="text-slate-400">
-              Enter your details and we’ll send you a tailored proposal and next steps.
-            </DialogDescription>
-          </DialogHeader>
-          <form onSubmit={onLeadSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="lead-name" className="text-slate-300">
-                Name
-              </Label>
-              <Input
-                id="lead-name"
-                {...leadForm.register("name")}
-                placeholder="Your name"
-                className="border-slate-600 bg-slate-800 text-white placeholder:text-slate-500"
-              />
-              {leadForm.formState.errors.name && (
-                <p className="text-sm text-red-400">{leadForm.formState.errors.name.message}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="lead-email" className="text-slate-300">
-                Email
-              </Label>
-              <Input
-                id="lead-email"
-                type="email"
-                {...leadForm.register("email")}
-                placeholder="you@company.com"
-                className="border-slate-600 bg-slate-800 text-white placeholder:text-slate-500"
-              />
-              {leadForm.formState.errors.email && (
-                <p className="text-sm text-red-400">{leadForm.formState.errors.email.message}</p>
-              )}
-            </div>
-            <DialogFooter className="gap-2 sm:gap-0">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setLeadDialogOpen(false)}
-                className="border-slate-600 text-slate-300"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="bg-emerald-600 hover:bg-emerald-500 text-white"
-              >
-                Send proposal
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Final breakdown (after lead capture) */}
-      <Dialog open={finalBreakdownOpen} onOpenChange={(open) => !open && closeFinalBreakdown()}>
-        <DialogContent
-          showClose={true}
-          className="border-slate-700 bg-slate-900 text-white max-w-md"
-        >
-          <DialogHeader>
-            <DialogTitle className="text-white">Your proposal</DialogTitle>
-            <DialogDescription className="text-slate-400">
-              {capturedLead && (
-                <>We’ll email the full proposal to {capturedLead.email}.</>
-              )}
-            </DialogDescription>
-          </DialogHeader>
-          {submittedQuote && (
-            <div className="space-y-3 rounded-lg border border-slate-700/80 bg-slate-800/40 p-4 text-sm">
-              <div className="flex justify-between">
-                <span className="text-slate-400">Platform</span>
-                <span className="text-white capitalize">
-                  {submittedQuote.platform === "ai" ? "AI Automation" : submittedQuote.platform === "mobile" ? "Mobile App" : "Web App"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Urgency</span>
-                <span className="text-white">{submittedQuote.urgency[0]}%</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">AI integration</span>
-                <span className="text-white">{submittedQuote.aiIntegration ? "Yes" : "No"}</span>
-              </div>
-              {submittedQuote.projectDescription?.trim() && (
-                <div className="border-t border-slate-700 pt-3">
-                  <span className="text-slate-400 block text-xs font-medium mb-1">Project details</span>
-                  <p className="text-slate-300 text-sm whitespace-pre-wrap">{submittedQuote.projectDescription.trim()}</p>
+          {!leadSubmitted ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-white">Where should we send your estimate?</DialogTitle>
+                <DialogDescription className="text-slate-400">
+                  Enter your name and email and we’ll show your estimate and next steps.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={onLeadSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="lead-name" className="text-slate-300">
+                    Name
+                  </Label>
+                  <Input
+                    id="lead-name"
+                    {...leadForm.register("name")}
+                    placeholder="Your name"
+                    className="border-slate-600 bg-slate-800 text-white placeholder:text-slate-500"
+                  />
+                  {leadForm.formState.errors.name && (
+                    <p className="text-sm text-red-400">{leadForm.formState.errors.name.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lead-email" className="text-slate-300">
+                    Email
+                  </Label>
+                  <Input
+                    id="lead-email"
+                    type="email"
+                    {...leadForm.register("email")}
+                    placeholder="you@company.com"
+                    className="border-slate-600 bg-slate-800 text-white placeholder:text-slate-500"
+                  />
+                  {leadForm.formState.errors.email && (
+                    <p className="text-sm text-red-400">{leadForm.formState.errors.email.message}</p>
+                  )}
+                </div>
+                <DialogFooter className="gap-2 sm:gap-0">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={closeLeadDialog}
+                    className="border-slate-600 text-slate-300"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white"
+                  >
+                    {isSubmitting ? "Sending…" : "Send my estimate"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-white">Your estimate</DialogTitle>
+                <DialogDescription className="text-slate-400">
+                  {capturedLead && (
+                    <>We’ve sent a copy to {capturedLead.email}. Book a call to discuss next steps.</>
+                  )}
+                </DialogDescription>
+              </DialogHeader>
+              {finalEstimate && submittedQuote && (
+                <div className="space-y-4">
+                  <div className="rounded-xl border border-slate-700/80 bg-slate-800/40 p-5 text-center">
+                    <p className="text-sm font-medium text-slate-400 mb-1">Estimated range</p>
+                    <p
+                      className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent tabular-nums"
+                      style={{ textShadow: "0 0 40px rgba(34, 211, 238, 0.2)" }}
+                    >
+                      {formatPrice(finalEstimate.low)} – {formatPrice(finalEstimate.high)}
+                    </p>
+                  </div>
+                  <Button
+                    asChild
+                    className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white rounded-lg py-6 text-base font-semibold gap-2"
+                    data-id="contact"
+                  >
+                    <a
+                      href={CALENDLY_STRATEGY_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Book a strategy call with BC Studios"
+                    >
+                      <Calendar className="size-5" />
+                      Book a Strategy Call
+                    </a>
+                  </Button>
                 </div>
               )}
-              <div className="border-t border-slate-700 pt-3 flex justify-between items-center">
-                <span className="text-slate-300 font-medium">Estimated range</span>
-                <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                  {formatPrice(computeEstimate(submittedQuote).low)} – {formatPrice(computeEstimate(submittedQuote).high)}
-                </span>
-              </div>
-            </div>
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={closeLeadDialog}
+                  className="border-slate-600 text-slate-300"
+                >
+                  Close
+                </Button>
+              </DialogFooter>
+            </>
           )}
-          <DialogFooter>
-            <Button onClick={closeFinalBreakdown} className="bg-slate-700 hover:bg-slate-600 text-white">
-              Close
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

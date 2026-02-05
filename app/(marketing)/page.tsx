@@ -25,13 +25,12 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { HeroGlobe } from "@/components/landing/hero-globe";
-// --- Scroll helper ---
+
 const ScrollToSection = (id: string) => {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: "smooth" });
 };
 
-// --- Typewriter (rotating words) ---
 const Typewriter = ({ words }: { words: string[] }) => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
@@ -68,47 +67,20 @@ const Typewriter = ({ words }: { words: string[] }) => {
   );
 };
 
-// --- Reveal wrapper (Framer Motion) ---
 const revealVariants = {
   hidden: { opacity: 0, y: 32 },
   visible: { opacity: 1, y: 0 },
 };
 
-// --- Service card (6 services: Mobile, Web, UI/UX, Strategy, Maintenance, Cloud) ---
 const SERVICE_ITEMS = [
-  {
-    title: "Mobile",
-    desc: "Native and cross-platform apps for iOS and Android that users love.",
-    icon: Smartphone,
-  },
-  {
-    title: "Web",
-    desc: "Fast, scalable web applications and sites built with modern stacks.",
-    icon: Globe,
-  },
-  {
-    title: "UI/UX",
-    desc: "User-centered design that drives engagement and conversion.",
-    icon: LayoutTemplate,
-  },
-  {
-    title: "Strategy",
-    desc: "Product and technical strategy to align vision with execution.",
-    icon: Target,
-  },
-  {
-    title: "Maintenance",
-    desc: "Ongoing support, updates, and performance optimization.",
-    icon: Settings,
-  },
-  {
-    title: "Cloud",
-    desc: "Cloud infrastructure, DevOps, and scalable deployments.",
-    icon: Cloud,
-  },
+  { title: "Mobile", desc: "Native and cross-platform apps for iOS and Android that users love.", icon: Smartphone },
+  { title: "Web", desc: "Fast, scalable web applications and sites built with modern stacks.", icon: Globe },
+  { title: "UI/UX", desc: "User-centered design that drives engagement and conversion.", icon: LayoutTemplate },
+  { title: "Strategy", desc: "Product and technical strategy to align vision with execution.", icon: Target },
+  { title: "Maintenance", desc: "Ongoing support, updates, and performance optimization.", icon: Settings },
+  { title: "Cloud", desc: "Cloud infrastructure, DevOps, and scalable deployments.", icon: Cloud },
 ];
 
-// --- Process steps (4-step roadmap) ---
 const PROCESS_STEPS = [
   { step: "01", title: "Discover", desc: "We align on your vision, goals, and technical requirements." },
   { step: "02", title: "Design", desc: "Wireframes, prototypes, and a clear roadmap for build." },
@@ -116,14 +88,12 @@ const PROCESS_STEPS = [
   { step: "04", title: "Deploy", desc: "Launch, monitor, and iterate with ongoing support." },
 ];
 
-// --- Stats bar ---
 const STATS = [
   { label: "On-Time Delivery", value: "98%", icon: Calendar },
   { label: "Delivery Rate", value: "100+", sub: "Projects", icon: TrendingUp },
   { label: "Support", value: "24/7", icon: Headphones },
 ];
 
-// --- Project card (uses Next.js Image); variant "light" for white sections ---
 const ProjectCard = ({
   title,
   desc,
@@ -189,8 +159,13 @@ const ProjectCard = ({
           className={`w-full gap-2 ${isLight ? "bg-emerald-600 hover:bg-emerald-700 text-white" : "bg-emerald-600 hover:bg-emerald-700 text-white"}`}
           variant="default"
         >
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            Live Demo <ExternalLink size={16} />
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`View live demo: ${title}`}
+          >
+            Live Demo <ExternalLink size={16} aria-hidden />
           </a>
         </Button>
       </div>
@@ -206,8 +181,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-transparent font-sans selection:bg-amber-900/50 pt-16 relative overflow-x-hidden text-balance">
-      {/* Northern lights background — blended for readability */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden>
         <div className="absolute inset-0 bg-slate-950" />
         <div className="northern-light northern-1" />
         <div className="northern-light northern-2" />
@@ -215,21 +189,18 @@ export default function Home() {
         <div className="northern-light northern-4" />
         <div className="northern-light northern-5" />
         <div className="northern-light northern-6" />
-        {/* Light overlay: keeps lights visible but adds contrast for text */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_100%_at_50%_50%,transparent_0%,rgba(2,6,23,0.2)_45%,rgba(2,6,23,0.5)_100%)]" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-transparent to-slate-950/50" />
       </div>
 
-      {/* Hero — mesh gradient background; left: text (centered), right: 3D scene floating above */}
-      <section className="relative py-24 lg:py-32 z-10 min-h-[85vh] flex items-center">
-        {/* Background: mesh gradient stays behind; 3D floats above */}
+      <section id="hero" className="relative py-24 lg:py-32 z-10 min-h-[85vh] flex items-center" aria-label="Hero">
         <div className="absolute inset-0 -z-10">
           <Image
             src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80"
-            alt=""
+            alt="Team collaboration and digital innovation - BC Studios Chicago web design, AI automation and SaaS development"
             fill
             className="object-cover"
-            priority
+            priority={true}
             sizes="100vw"
           />
           <div className="absolute inset-0 bg-slate-950/75" />
@@ -237,7 +208,6 @@ export default function Home() {
         </div>
 
         <div className="container mx-auto px-4 relative z-0 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
-          {/* Left: copy — centered text and vertically centered with the globe */}
           <div className="flex flex-col justify-center items-center text-center order-2 lg:order-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -282,29 +252,29 @@ export default function Home() {
                 onClick={() => ScrollToSection("contact")}
                 size="lg"
                 className="h-14 px-8 text-lg bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white shadow-xl shadow-emerald-900/20 rounded-full transition-all hover:scale-105"
+                aria-label="Start your project - scroll to contact section"
               >
-                Start Project <ArrowRight className="ml-2 w-5 h-5" />
+                Start Project <ArrowRight className="ml-2 w-5 h-5" aria-hidden />
               </Button>
               <Button
                 onClick={() => ScrollToSection("work")}
                 size="lg"
                 variant="outline"
                 className="h-14 px-8 text-lg border-slate-600 bg-slate-900/50 hover:bg-slate-800 text-white rounded-full backdrop-blur-sm hover:scale-105"
+                aria-label="View our work - scroll to featured projects"
               >
                 View Our Work
               </Button>
             </motion.div>
           </div>
 
-          {/* Right: rotating globe with green glow — floats above gradient */}
-          <div className="order-1 lg:order-2 w-full flex items-center justify-center h-[500px] min-h-[400px]">
+          <div className="order-1 lg:order-2 w-full flex items-center justify-center h-[500px] min-h-[400px]" aria-hidden>
             <HeroGlobe />
           </div>
         </div>
       </section>
 
-      {/* Stats Bar */}
-      <section className="relative z-10 py-12 border-y border-slate-800/60 bg-slate-900/30 backdrop-blur-sm">
+      <section id="stats" className="relative z-10 py-12 border-y border-slate-800/60 bg-slate-900/30 backdrop-blur-sm" aria-label="Company statistics">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             {STATS.map(({ label, value, sub, icon: Icon }, i) => (
@@ -316,7 +286,7 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 className="flex flex-col items-center gap-2"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600/20 to-emerald-600/20 border border-slate-700 flex items-center justify-center text-emerald-400">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600/20 to-emerald-600/20 border border-slate-700 flex items-center justify-center text-emerald-400" aria-hidden>
                   <Icon size={24} />
                 </div>
                 <p className="text-3xl md:text-4xl font-bold text-white bg-clip-text main-heading">
@@ -330,12 +300,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Grid — image as background (robot/tech), clear image + readable text */}
-      <section id="services" className="py-24 relative z-10 overflow-hidden">
+      <section id="services" className="py-24 relative z-10 overflow-hidden" aria-labelledby="services-heading">
         <div className="absolute inset-0 -z-10">
           <Image
             src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1920&q=80"
-            alt=""
+            alt="Technology and coding workspace - BC Studios web and software development services"
             fill
             className="object-cover opacity-90 brightness-110"
             sizes="100vw"
@@ -350,7 +319,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 main-heading">Our Services</h2>
+            <h2 id="services-heading" className="text-3xl md:text-4xl font-bold text-white mb-4 main-heading">Our Services</h2>
             <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full" />
           </motion.div>
 
@@ -366,9 +335,9 @@ export default function Home() {
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                 >
                   <Card className="group h-full border border-slate-700 bg-slate-900/70 backdrop-blur-sm hover:shadow-2xl hover:shadow-emerald-900/20 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-blue-500 to-emerald-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom" />
+                    <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-blue-500 to-emerald-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom" aria-hidden />
                     <CardHeader>
-                      <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600/40 to-emerald-600/40 border border-slate-600 flex items-center justify-center text-emerald-400 group-hover:text-white transition-colors">
+                      <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600/40 to-emerald-600/40 border border-slate-600 flex items-center justify-center text-emerald-400 group-hover:text-white transition-colors" aria-hidden>
                         <Icon size={24} />
                       </div>
                       <CardTitle className="text-xl font-bold text-white">{item.title}</CardTitle>
@@ -384,8 +353,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Process — 4-step horizontal roadmap, reveal on scroll */}
-      <section id="process" className="py-24 bg-slate-900/30 relative z-10 border-t border-slate-800">
+      <section id="process" className="py-24 bg-slate-900/30 relative z-10 border-t border-slate-800" aria-labelledby="process-heading">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -393,7 +361,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 main-heading">How We Work</h2>
+            <h2 id="process-heading" className="text-3xl md:text-4xl font-bold text-white mb-4 main-heading">How We Work</h2>
             <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full" />
           </motion.div>
 
@@ -408,7 +376,7 @@ export default function Home() {
                 className="relative"
               >
                 {i < PROCESS_STEPS.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-0.5 bg-gradient-to-r from-slate-700 to-slate-800 z-0" />
+                  <div className="hidden lg:block absolute top-8 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-0.5 bg-gradient-to-r from-slate-700 to-slate-800 z-0" aria-hidden />
                 )}
                 <div className="relative z-10 text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600/30 to-emerald-600/30 border border-slate-700 text-emerald-400 font-bold text-lg mb-4">
@@ -423,12 +391,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Work / Portfolio — Renaissance AI art background, clear image + colors that pop */}
-      <section id="work" className="py-24 relative z-10 border-t border-slate-800 overflow-hidden">
+      <section id="work" className="py-24 relative z-10 border-t border-slate-800 overflow-hidden" aria-labelledby="work-heading">
         <div className="absolute inset-0 -z-10">
           <Image
             src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80"
-            alt="Renaissance AI art"
+            alt="Digital art and AI-powered creative work - BC Studios SaaS and web design portfolio"
             fill
             className="object-cover brightness-105 saturate-110 contrast-105"
             sizes="100vw"
@@ -441,11 +408,13 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-0">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 main-heading">Featured Projects</h2>
+              <h2 id="work-heading" className="text-3xl md:text-4xl font-bold text-white mb-4 main-heading">Featured Projects</h2>
               <p className="text-slate-300 max-w-xl text-lg main-text">See how we help businesses transform with technology.</p>
             </div>
-            <Button variant="ghost" className="text-emerald-400 hover:text-emerald-300 font-semibold gap-1">
-              View All <ChevronRight size={16} />
+            <Button variant="ghost" className="text-emerald-400 hover:text-emerald-300 font-semibold gap-1" asChild>
+              <a href="/case-studies" aria-label="View all case studies and featured projects">
+                View All <ChevronRight size={16} aria-hidden />
+              </a>
             </Button>
           </div>
 
@@ -456,7 +425,7 @@ export default function Home() {
               tag="AI SaaS"
               link="https://roastingresumes.streamlit.app/"
               imageUrl="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
-              imageAlt="Resume Roaster AI project"
+              imageAlt="Resume Roaster AI - AI-powered resume analysis and feedback tool by BC Studios"
             />
             <ProjectCard
               title="Voice2SOP"
@@ -464,18 +433,17 @@ export default function Home() {
               tag="AI SaaS"
               link="https://voice2sop.streamlit.app/"
               imageUrl="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
-              imageAlt="Voice2SOP project"
+              imageAlt="Voice2SOP - Voice to standard operating procedure converter by BC Studios"
             />
           </div>
         </div>
       </section>
 
-      {/* Contact — paper plane in sky background, clear and visible; card keeps text readable */}
-      <section id="contact" className="py-24 relative z-10 overflow-hidden">
+      <section id="contact" className="py-24 relative z-10 overflow-hidden" aria-labelledby="contact-heading">
         <div className="absolute inset-0 -z-10">
           <Image
             src="https://images.unsplash.com/photo-1457364559154-aa2644600ebb?auto=format&fit=crop&w=1920&q=80"
-            alt="Paper plane flying in the sky"
+            alt="Sky and clouds - Get in touch with BC Studios Chicago for web design and AI automation"
             fill
             className="object-cover brightness-[0.95] saturate-100"
             sizes="100vw"
@@ -486,15 +454,15 @@ export default function Home() {
           <div className="bg-slate-900/85 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-slate-700/80">
             <div className="p-10 md:p-12 text-white w-full md:w-2/5 flex flex-col justify-between bg-slate-900/90">
               <div>
-                <h3 className="text-3xl font-bold mb-6 main-heading text-white">Let&apos;s build something great.</h3>
+                <h2 id="contact-heading" className="text-3xl font-bold mb-6 main-heading text-white">Let&apos;s build something great.</h2>
                 <p className="text-slate-300 mb-8 main-text">Ready to start? We&apos;ll get back to you within 24 hours.</p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 text-slate-300">
-                    <Mail className="w-5 h-5 text-emerald-400" />
-                    <a href="mailto:core@bc-studios.org" className="hover:text-white">core@bc-studios.org</a>
+                    <Mail className="w-5 h-5 text-emerald-400" aria-hidden />
+                    <a href="mailto:core@bc-studios.org" className="hover:text-white" aria-label="Email BC Studios at core@bc-studios.org">core@bc-studios.org</a>
                   </div>
                   <div className="flex items-center gap-3 text-slate-300">
-                    <MapPin className="w-5 h-5 text-blue-400" />
+                    <MapPin className="w-5 h-5 text-blue-400" aria-hidden />
                     <span>Chicago, IL</span>
                   </div>
                 </div>
@@ -509,6 +477,7 @@ export default function Home() {
                     type="text"
                     placeholder="Full Name"
                     className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                    aria-label="Your full name"
                   />
                   <input
                     required
@@ -516,11 +485,13 @@ export default function Home() {
                     type="email"
                     placeholder="Email Address"
                     className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                    aria-label="Your email address"
                   />
                 </div>
                 <select
                   name="project_type"
                   className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                  aria-label="Project type"
                 >
                   <option>Web Application</option>
                   <option>Mobile App</option>
@@ -534,12 +505,14 @@ export default function Home() {
                   rows={4}
                   placeholder="Project Details"
                   className="w-full px-4 py-3 rounded-lg border border-slate-700 bg-slate-900 text-white placeholder:text-slate-400 resize-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                  aria-label="Project details or message"
                 />
                 <Button
                   type="submit"
                   className="w-full h-12 bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white font-bold rounded-lg shadow-lg"
+                  aria-label="Send your message to BC Studios"
                 >
-                  Send Message <Send className="ml-2 w-4 h-4" />
+                  Send Message <Send className="ml-2 w-4 h-4" aria-hidden />
                 </Button>
               </form>
             </div>
