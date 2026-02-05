@@ -2,12 +2,20 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { auth } from "@clerk/nextjs/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 export async function POST(request: Request) {
   try {
+    const secretKey = process.env.STRIPE_SECRET_KEY;
+    if (!secretKey) {
+      console.error("STRIPE_SECRET_KEY is not set");
+      return NextResponse.json(
+        { error: "Server configuration error: Stripe is not configured." },
+        { status: 500 }
+      );
+    }
+
+    const stripe = new Stripe(secretKey);
     const { userId } = await auth();
     const body = await request.json();
     const projectType = typeof body.projectType === "string" ? body.projectType : "Project";
