@@ -33,7 +33,7 @@ export default function Header() {
     { href: "/", label: "Home" },
     { href: "/solutions", label: "Products" },
     { href: "/services", label: "Agency" },
-    { href: "/contact", label: "Contact" },
+    { href: "/quote", label: "Get Quote" },
   ] as const;
 
   return (

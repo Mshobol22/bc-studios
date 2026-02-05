@@ -24,6 +24,7 @@ import {
   ChevronRight,
   ExternalLink,
 } from "lucide-react";
+import { HeroGlobe } from "@/components/landing/hero-globe";
 // --- Scroll helper ---
 const ScrollToSection = (id: string) => {
   const el = document.getElementById(id);
@@ -219,8 +220,9 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-transparent to-slate-950/50" />
       </div>
 
-      {/* Hero — background image: programmers at work, blended for text readability */}
+      {/* Hero — mesh gradient background; left: text (centered), right: 3D scene floating above */}
       <section className="relative py-24 lg:py-32 z-10 min-h-[85vh] flex items-center">
+        {/* Background: mesh gradient stays behind; 3D floats above */}
         <div className="absolute inset-0 -z-10">
           <Image
             src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80"
@@ -233,62 +235,71 @@ export default function Home() {
           <div className="absolute inset-0 bg-slate-950/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/90" />
         </div>
-        <div className="container mx-auto px-4 text-center relative z-0">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-slate-900/60 backdrop-blur-sm border border-slate-700/60"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-            </span>
-            <span className="text-slate-300 text-xs font-bold tracking-widest uppercase">Accepting New Clients</span>
-          </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1] max-w-4xl mx-auto main-heading"
-          >
-            We build digital <br className="hidden md:block" />
-            <Typewriter words={["Experiences.", "Applications.", "Automation.", "Realities."]} />
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed main-text"
-          >
-            BC-studios is a premier creative technology firm delivering pixel-perfect websites,
-            powerful AI tools, and scalable software solutions.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="flex flex-col sm:flex-row justify-center gap-4"
-          >
-            <Button
-              onClick={() => ScrollToSection("contact")}
-              size="lg"
-              className="h-14 px-8 text-lg bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white shadow-xl shadow-emerald-900/20 rounded-full transition-all hover:scale-105"
+        <div className="container mx-auto px-4 relative z-0 grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+          {/* Left: copy — centered text and vertically centered with the globe */}
+          <div className="flex flex-col justify-center items-center text-center order-2 lg:order-1">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-slate-900/60 backdrop-blur-sm border border-slate-700/60 w-fit"
             >
-              Start Project <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button
-              onClick={() => ScrollToSection("work")}
-              size="lg"
-              variant="outline"
-              className="h-14 px-8 text-lg border-slate-600 bg-slate-900/50 hover:bg-slate-800 text-white rounded-full backdrop-blur-sm hover:scale-105"
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span className="text-slate-300 text-xs font-bold tracking-widest uppercase">Accepting New Clients</span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1] max-w-xl main-heading w-full"
             >
-              View Our Work
-            </Button>
-          </motion.div>
+              We build digital <br className="hidden md:block" />
+              <Typewriter words={["Experiences.", "Applications.", "Automation.", "Realities."]} />
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="text-lg md:text-xl text-slate-300 max-w-xl mb-10 leading-relaxed main-text w-full"
+            >
+              BC-studios is a premier creative technology firm delivering pixel-perfect websites,
+              powerful AI tools, and scalable software solutions.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="flex flex-col sm:flex-row justify-center gap-4"
+            >
+              <Button
+                onClick={() => ScrollToSection("contact")}
+                size="lg"
+                className="h-14 px-8 text-lg bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white shadow-xl shadow-emerald-900/20 rounded-full transition-all hover:scale-105"
+              >
+                Start Project <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+              <Button
+                onClick={() => ScrollToSection("work")}
+                size="lg"
+                variant="outline"
+                className="h-14 px-8 text-lg border-slate-600 bg-slate-900/50 hover:bg-slate-800 text-white rounded-full backdrop-blur-sm hover:scale-105"
+              >
+                View Our Work
+              </Button>
+            </motion.div>
+          </div>
+
+          {/* Right: rotating globe with green glow — floats above gradient */}
+          <div className="order-1 lg:order-2 w-full flex items-center justify-center h-[500px] min-h-[400px]">
+            <HeroGlobe />
+          </div>
         </div>
       </section>
 

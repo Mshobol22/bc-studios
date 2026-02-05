@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import PageTransition from "@/components/PageTransition";
 import { ThemeProvider } from "@/components/ui/theme-provider";
@@ -27,9 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased mesh-gradient-bg min-h-screen text-white`}>
-        <ThemeProvider defaultTheme="dark" forcedTheme="dark">
-          <PageTransition>{children}</PageTransition>
-        </ThemeProvider>
+        <ClerkProvider>
+          <ThemeProvider defaultTheme="dark" forcedTheme="dark">
+            <PageTransition>{children}</PageTransition>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
