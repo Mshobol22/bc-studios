@@ -2,13 +2,11 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
-  Code,
-  Zap,
   Smartphone,
   Globe,
   Send,
@@ -22,9 +20,10 @@ import {
   TrendingUp,
   Headphones,
   ChevronRight,
-  ExternalLink,
 } from "lucide-react";
 import { HeroGlobe } from "@/components/landing/hero-globe";
+import { PORTFOLIO_CATEGORIES } from "@/lib/portfolio-data";
+import Link from "next/link";
 
 const ScrollToSection = (id: string) => {
   const el = document.getElementById(id);
@@ -93,85 +92,6 @@ const STATS = [
   { label: "Delivery Rate", value: "100+", sub: "Projects", icon: TrendingUp },
   { label: "Support", value: "24/7", icon: Headphones },
 ];
-
-const ProjectCard = ({
-  title,
-  desc,
-  tag,
-  link,
-  imageUrl,
-  imageAlt,
-  variant = "dark",
-}: {
-  title: string;
-  desc: string;
-  tag: string;
-  link: string;
-  imageUrl: string;
-  imageAlt: string;
-  variant?: "dark" | "light";
-}) => {
-  const isLight = variant === "light";
-  return (
-    <Card
-      className={
-        isLight
-          ? "overflow-hidden border border-slate-200 bg-white hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 hover:border-emerald-400/50 group h-full flex flex-col"
-          : "overflow-hidden border-slate-800 hover:shadow-2xl transition-all duration-500 hover:border-emerald-500/50 group h-full flex flex-col bg-slate-900/80 backdrop-blur-sm"
-      }
-    >
-      <div className="h-48 relative overflow-hidden">
-        <Image
-          src={imageUrl}
-          alt={imageAlt}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-        <div
-          className={
-            isLight
-              ? "absolute inset-0 bg-gradient-to-t from-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
-              : "absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
-          }
-        />
-      </div>
-      <CardHeader>
-        <div className="flex justify-between items-start mb-2">
-          <CardTitle className={`text-xl font-bold ${isLight ? "text-slate-900" : "text-white"}`}>{title}</CardTitle>
-          <span
-            className={
-              isLight
-                ? "px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded uppercase tracking-wider border border-emerald-200"
-                : "px-2 py-1 bg-emerald-950 text-emerald-400 text-xs font-bold rounded uppercase tracking-wider border border-emerald-800"
-            }
-          >
-            {tag}
-          </span>
-        </div>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <p className={isLight ? "text-slate-600" : "text-slate-300"}>{desc}</p>
-      </CardContent>
-      <div className="p-6 pt-0">
-        <Button
-          asChild
-          className={`w-full gap-2 ${isLight ? "bg-emerald-600 hover:bg-emerald-700 text-white" : "bg-emerald-600 hover:bg-emerald-700 text-white"}`}
-          variant="default"
-        >
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`View live demo: ${title}`}
-          >
-            Live Demo <ExternalLink size={16} aria-hidden />
-          </a>
-        </Button>
-      </div>
-    </Card>
-  );
-};
 
 export default function Home() {
   const servicesRef = useRef<HTMLDivElement>(null);
@@ -412,29 +332,52 @@ export default function Home() {
               <p className="text-slate-300 max-w-xl text-lg main-text">See how we help businesses transform with technology.</p>
             </div>
             <Button variant="ghost" className="text-emerald-400 hover:text-emerald-300 font-semibold gap-1" asChild>
-              <a href="/case-studies" aria-label="View all case studies and featured projects">
+              <Link href="/solutions" aria-label="View all products and projects">
                 View All <ChevronRight size={16} aria-hidden />
-              </a>
+              </Link>
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <ProjectCard
-              title="Resume Roaster AI"
-              desc="AI-powered resume analysis and constructive feedback for job seekers."
-              tag="AI SaaS"
-              link="https://roastingresumes.streamlit.app/"
-              imageUrl="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
-              imageAlt="Resume Roaster AI - AI-powered resume analysis and feedback tool by BC Studios"
-            />
-            <ProjectCard
-              title="Voice2SOP"
-              desc="Voice-to-SOP converter that turns spoken instructions into structured procedures."
-              tag="AI SaaS"
-              link="https://voice2sop.streamlit.app/"
-              imageUrl="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
-              imageAlt="Voice2SOP - Voice to standard operating procedure converter by BC Studios"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PORTFOLIO_CATEGORIES.flatMap((c) => c.projects).slice(0, 4).map((project) => (
+              <motion.a
+                key={project.id}
+                href={project.url}
+                target={project.url.startsWith("http") ? "_blank" : undefined}
+                rel={project.url.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="group block rounded-xl overflow-hidden border border-slate-700 bg-slate-900/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:shadow-emerald-900/20 hover:border-emerald-500/50 transition-all duration-300"
+                style={{ aspectRatio: "16/10" }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="relative w-full h-full overflow-hidden">
+                  {project.imageUrl.startsWith("/") ? (
+                    <img
+                      src={project.imageUrl}
+                      alt={project.imageAlt}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <Image
+                      src={project.imageUrl}
+                      alt={project.imageAlt}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <span className="inline-block px-2 py-0.5 mb-2 text-xs font-bold uppercase tracking-wider rounded bg-emerald-500/30 text-emerald-300 border border-emerald-500/50">
+                      {project.tag}
+                    </span>
+                    <h3 className="text-lg font-bold leading-tight">{project.title}</h3>
+                    <p className="text-sm text-slate-300 mt-0.5 line-clamp-2">{project.description}</p>
+                  </div>
+                </div>
+              </motion.a>
+            ))}
           </div>
         </div>
       </section>

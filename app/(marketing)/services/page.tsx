@@ -206,10 +206,10 @@ export default function ServicesPage() {
             </Link>{" "}
             and{" "}
             <Link
-              href="/case-studies"
+              href="/solutions"
               className="text-emerald-400 hover:underline"
             >
-              case studies
+              products
             </Link>
             .
           </p>
