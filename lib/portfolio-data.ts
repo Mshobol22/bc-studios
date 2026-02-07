@@ -26,6 +26,15 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
     label: "SaaS & Apps",
     projects: [
       {
+        id: "adchaser",
+        title: "ADchaser",
+        description: "AI-powered architectural visualization and gallery system.",
+        tag: "AI SaaS",
+        url: "#",
+        imageUrl: "/images/adchaser.jpg",
+        imageAlt: "ADchaser - AI-powered architectural visualization and gallery by BC Studios",
+      },
+      {
         id: "resume-roaster",
         title: "Resume Roaster AI",
         description: "AI-powered resume analysis and constructive feedback for job seekers.",
