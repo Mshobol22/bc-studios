@@ -30,8 +30,8 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
         title: "ADchaser",
         description: "AI-powered architectural visualization and gallery system.",
         tag: "AI SaaS",
-        url: "#",
-        imageUrl: "/images/adchaser.jpg",
+        url: "https://a-dchaser.vercel.app/",
+        imageUrl: "/images/adchaser.png",
         imageAlt: "ADchaser - AI-powered architectural visualization and gallery by BC Studios",
       },
       {

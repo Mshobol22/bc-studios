@@ -16,35 +16,45 @@ type ProductCarouselProps = {
 
 function ProductCard({
   project,
-  onClick,
   onMouseEnter,
   onMouseLeave,
 }: {
   project: PortfolioProject;
-  onClick: () => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }) {
+  const isExternal = project.url.startsWith("http");
+  const Wrapper = isExternal ? "a" : "div";
+  const wrapperProps = isExternal
+    ? {
+        href: project.url,
+        target: "_blank" as const,
+        rel: "noopener noreferrer",
+      }
+    : { style: { cursor: "default" as const } };
+
   return (
-    <motion.a
-      href={project.url}
-      onClick={(e) => {
-        if (project.url === "#") e.preventDefault();
-        else onClick();
-      }}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      className="group flex-shrink-0 w-[280px] sm:w-[320px] cursor-pointer rounded-xl overflow-hidden border border-slate-700 bg-slate-900/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:shadow-emerald-900/20 hover:border-emerald-500/50 transition-all duration-300 block"
+    <motion.div
+      className="flex-shrink-0 w-[280px] sm:w-[320px]"
       style={{ aspectRatio: "16/10" }}
       whileHover={{ scale: 1.02 }}
       transition={{ type: "tween", duration: 0.2 }}
     >
+      <Wrapper
+        {...wrapperProps}
+        className="group block w-full h-full cursor-pointer rounded-xl overflow-hidden border border-slate-700 bg-slate-900/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:shadow-emerald-900/20 hover:border-emerald-500/50 transition-all duration-300"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
       <div className="relative w-full h-full overflow-hidden">
         {project.imageUrl.startsWith("/") ? (
-          <img
+          <Image
             src={project.imageUrl}
             alt={project.imageAlt}
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            fill
+            unoptimized
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 640px) 280px, 320px"
           />
         ) : (
           <Image
@@ -64,7 +74,8 @@ function ProductCard({
           <p className="text-sm text-slate-300 mt-0.5 line-clamp-2">{project.description}</p>
         </div>
       </div>
-    </motion.a>
+      </Wrapper>
+    </motion.div>
   );
 }
 
@@ -80,24 +91,35 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
   const isHoveredRef = useRef(false);
   isHoveredRef.current = isHovered;
 
-  const shouldSlide = items.length >= MIN_ITEMS_TO_SLIDE && contentWidth > 0;
+  const hasEnoughItems = items.length >= MIN_ITEMS_TO_SLIDE;
+  const shouldAnimate = hasEnoughItems && contentWidth > 0;
 
-  // Measure width of one set of cards
+  // Measure width of one set of cards (must render sliding layout first for ref to exist)
   useEffect(() => {
-    if (items.length < MIN_ITEMS_TO_SLIDE) return;
+    if (!hasEnoughItems) return;
     const measure = () => {
       const el = firstSetRef.current;
       if (el) setContentWidth(el.offsetWidth + CARD_GAP);
     };
-    measure();
-    const ro = new ResizeObserver(measure);
-    if (firstSetRef.current) ro.observe(firstSetRef.current);
-    return () => ro.disconnect();
-  }, [items.length]);
+    // Measure after paint - ref may not be ready on first run
+    let ro: ResizeObserver | null = null;
+    const raf = requestAnimationFrame(() => {
+      measure();
+      const el = firstSetRef.current;
+      if (el) {
+        ro = new ResizeObserver(measure);
+        ro.observe(el);
+      }
+    });
+    return () => {
+      cancelAnimationFrame(raf);
+      ro?.disconnect();
+    };
+  }, [items.length, hasEnoughItems]);
 
   // Start/stop animation based on in-view and hover (infinite loop: 0 → -contentWidth, reset, repeat)
   useEffect(() => {
-    if (!shouldSlide || !isInView) return;
+    if (!shouldAnimate || !isInView) return;
 
     if (isHovered) {
       animationRef.current?.stop();
@@ -122,7 +144,7 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
       animationRef.current?.stop();
       animationRef.current = null;
     };
-  }, [isInView, isHovered, contentWidth, shouldSlide]);
+  }, [isInView, isHovered, contentWidth, shouldAnimate]);
 
   // Reset position when we pause so resume doesn't jump
   const handleMouseLeave = () => {
@@ -136,7 +158,7 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
     <section ref={containerRef} className="w-full">
       <h3 className="text-xl font-bold text-white mb-6 px-1">{title}</h3>
       <div className="overflow-hidden -mx-4 sm:mx-0">
-        {shouldSlide ? (
+        {hasEnoughItems ? (
           <motion.div
             ref={trackRef}
             className="flex gap-6 will-change-transform"
@@ -147,7 +169,6 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
                 <ProductCard
                   key={project.id}
                   project={project}
-                  onClick={() => window.open(project.url, "_blank", "noopener,noreferrer")}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={handleMouseLeave}
                 />
@@ -158,7 +179,6 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
                 <ProductCard
                   key={`${project.id}-dup`}
                   project={project}
-                  onClick={() => {}}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={handleMouseLeave}
                 />
@@ -171,7 +191,6 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
               <ProductCard
                 key={project.id}
                 project={project}
-                onClick={() => project.url !== "#" && window.open(project.url, "_blank", "noopener,noreferrer")}
                 onMouseEnter={() => {}}
                 onMouseLeave={() => {}}
               />

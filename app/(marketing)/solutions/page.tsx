@@ -30,7 +30,7 @@ export default function SolutionsPage() {
             Products
           </h1>
           <p className="text-slate-300 text-lg max-w-2xl mx-auto main-text">
-            SaaS apps, websites, and digital products we’ve built. Browse by category below.
+            SaaS apps, websites, and digital products we've built. Browse by category below.
           </p>
         </motion.div>
 

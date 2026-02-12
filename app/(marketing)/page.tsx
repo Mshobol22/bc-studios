@@ -353,10 +353,13 @@ export default function Home() {
               >
                 <div className="relative w-full h-full overflow-hidden">
                   {project.imageUrl.startsWith("/") ? (
-                    <img
+                    <Image
                       src={project.imageUrl}
                       alt={project.imageAlt}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   ) : (
                     <Image
