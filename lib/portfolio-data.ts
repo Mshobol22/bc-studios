@@ -26,6 +26,15 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
     label: "SaaS & Apps",
     projects: [
       {
+        id: "autobuzz",
+        title: "AutoBuzz",
+        description: "Social media operating system with AI-powered Vault for content generation, visual calendar for scheduling, and automated posting to LinkedIn & Instagram.",
+        tag: "SaaS / AI",
+        url: "https://autobuzz-marketing.vercel.app",
+        imageUrl: "/images/autobuzz.png",
+        imageAlt: "AutoBuzz - social media operating system with AI content generation and scheduling by BC Studios",
+      },
+      {
         id: "adchaser",
         title: "ADchaser",
         description: "AI-powered architectural visualization and gallery system.",
