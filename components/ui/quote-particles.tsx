@@ -54,7 +54,8 @@ export function QuoteParticles() {
       number: {
         density: {
           enable: true,
-          area: 800,
+          width: 1200,
+          height: 800,
         },
         value: 60,
       },
