@@ -6,12 +6,6 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const ScrollToSection = (id: string) => {
-  if (typeof document === "undefined") return;
-  const element = document.getElementById(id);
-  if (element) element.scrollIntoView({ behavior: "smooth" });
-};
-
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const pathname = usePathname();
   const isActive = pathname === href || (href === "/" && pathname === "/");

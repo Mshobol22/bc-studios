@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FileText, Download, Check, ArrowLeft, Loader2 } from "lucide-react";
+import { Download, Check, ArrowLeft, Loader2 } from "lucide-react";
 import type { PendingProposal } from "@/components/quote-calculator";
 
 const PENDING_PROPOSAL_KEY = "pending_proposal";

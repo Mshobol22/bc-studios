@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -24,8 +23,13 @@ import {
 import { HeroGlobe } from "@/components/landing/hero-globe";
 import { PORTFOLIO_CATEGORIES } from "@/lib/portfolio-data";
 import Link from "next/link";
+import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+import { VelocityScroll } from "@/components/ui/velocity-scroll";
+import { MotionSection } from "@/components/ui/motion-section";
+import { ProcessTimeline } from "@/components/ui/process-timeline";
+import { HomeBackground } from "@/components/ui/home-background";
 
-const ScrollToSection = (id: string) => {
+const scrollToSection = (id: string) => {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: "smooth" });
 };
@@ -44,13 +48,15 @@ const Typewriter = ({ words }: { words: string[] }) => {
   useEffect(() => {
     if (index === words.length) return;
     if (subIndex === words[index].length + 1 && !reverse) {
-      setReverse(true);
-      return;
+      const id = setTimeout(() => setReverse(true), 0);
+      return () => clearTimeout(id);
     }
     if (subIndex === 0 && reverse) {
-      setReverse(false);
-      setIndex((i) => (i + 1) % words.length);
-      return;
+      const id = setTimeout(() => {
+        setReverse(false);
+        setIndex((i) => (i + 1) % words.length);
+      }, 0);
+      return () => clearTimeout(id);
     }
     const timeout = setTimeout(
       () => setSubIndex((s) => s + (reverse ? -1 : 1)),
@@ -66,26 +72,16 @@ const Typewriter = ({ words }: { words: string[] }) => {
   );
 };
 
-const revealVariants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0 },
-};
-
 const SERVICE_ITEMS = [
-  { title: "Mobile", desc: "Native and cross-platform apps for iOS and Android that users love.", icon: Smartphone },
-  { title: "Web", desc: "Fast, scalable web applications and sites built with modern stacks.", icon: Globe },
-  { title: "UI/UX", desc: "User-centered design that drives engagement and conversion.", icon: LayoutTemplate },
-  { title: "Strategy", desc: "Product and technical strategy to align vision with execution.", icon: Target },
-  { title: "Maintenance", desc: "Ongoing support, updates, and performance optimization.", icon: Settings },
-  { title: "Cloud", desc: "Cloud infrastructure, DevOps, and scalable deployments.", icon: Cloud },
+  { title: "Mobile", desc: "Native and cross-platform apps for iOS and Android that users love.", icon: Smartphone, span: 2 as const },
+  { title: "Web", desc: "Fast, scalable web applications and sites built with modern stacks.", icon: Globe, span: 1 as const },
+  { title: "UI/UX", desc: "User-centered design that drives engagement and conversion.", icon: LayoutTemplate, span: 1 as const },
+  { title: "Strategy", desc: "Product and technical strategy to align vision with execution.", icon: Target, span: 2 as const },
+  { title: "Maintenance", desc: "Ongoing support, updates, and performance optimization.", icon: Settings, span: 1 as const },
+  { title: "Cloud", desc: "Cloud infrastructure, DevOps, and scalable deployments.", icon: Cloud, span: 1 as const },
 ];
 
-const PROCESS_STEPS = [
-  { step: "01", title: "Discover", desc: "We align on your vision, goals, and technical requirements." },
-  { step: "02", title: "Design", desc: "Wireframes, prototypes, and a clear roadmap for build." },
-  { step: "03", title: "Develop", desc: "Agile development with regular demos and feedback loops." },
-  { step: "04", title: "Deploy", desc: "Launch, monitor, and iterate with ongoing support." },
-];
+const TECH_STACK = ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase", "Stripe", "Framer Motion", "Vercel"];
 
 const STATS = [
   { label: "On-Time Delivery", value: "98%", icon: Calendar },
@@ -94,24 +90,9 @@ const STATS = [
 ];
 
 export default function Home() {
-  const servicesRef = useRef<HTMLDivElement>(null);
-  const processRef = useRef<HTMLDivElement>(null);
-  const servicesInView = useInView(servicesRef, { once: true, margin: "-80px" });
-  const processInView = useInView(processRef, { once: true, margin: "-80px" });
-
   return (
     <main className="min-h-screen bg-transparent font-sans selection:bg-amber-900/50 pt-16 relative overflow-x-hidden text-balance">
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden>
-        <div className="absolute inset-0 bg-slate-950" />
-        <div className="northern-light northern-1" />
-        <div className="northern-light northern-2" />
-        <div className="northern-light northern-3" />
-        <div className="northern-light northern-4" />
-        <div className="northern-light northern-5" />
-        <div className="northern-light northern-6" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_100%_at_50%_50%,transparent_0%,rgba(2,6,23,0.2)_45%,rgba(2,6,23,0.5)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-transparent to-slate-950/50" />
-      </div>
+      <HomeBackground />
 
       <section id="hero" className="relative py-24 lg:py-32 z-10 min-h-[85vh] flex items-center" aria-label="Hero">
         <div className="absolute inset-0 -z-10">
@@ -169,7 +150,7 @@ export default function Home() {
               className="flex flex-col sm:flex-row justify-center gap-4"
             >
               <Button
-                onClick={() => ScrollToSection("contact")}
+                onClick={() => scrollToSection("contact")}
                 size="lg"
                 className="h-14 px-8 text-lg bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white shadow-xl shadow-emerald-900/20 rounded-full transition-all hover:scale-105"
                 aria-label="Start your project - scroll to contact section"
@@ -177,7 +158,7 @@ export default function Home() {
                 Start Project <ArrowRight className="ml-2 w-5 h-5" aria-hidden />
               </Button>
               <Button
-                onClick={() => ScrollToSection("work")}
+                onClick={() => scrollToSection("work")}
                 size="lg"
                 variant="outline"
                 className="h-14 px-8 text-lg border-slate-600 bg-slate-900/50 hover:bg-slate-800 text-white rounded-full backdrop-blur-sm hover:scale-105"
@@ -233,83 +214,44 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60" />
         </div>
         <div className="container mx-auto px-4 relative z-0">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+          <MotionSection className="text-center mb-16">
             <h2 id="services-heading" className="text-3xl md:text-4xl font-bold text-white mb-4 main-heading">Our Services</h2>
             <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full" />
-          </motion.div>
+          </MotionSection>
 
-          <div ref={servicesRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SERVICE_ITEMS.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.title}
-                  variants={revealVariants}
-                  initial="hidden"
-                  animate={servicesInView ? "visible" : "hidden"}
-                  transition={{ duration: 0.4, delay: i * 0.08 }}
-                >
-                  <Card className="group h-full border border-slate-700 bg-slate-900/70 backdrop-blur-sm hover:shadow-2xl hover:shadow-emerald-900/20 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-blue-500 to-emerald-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom" aria-hidden />
-                    <CardHeader>
-                      <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600/40 to-emerald-600/40 border border-slate-600 flex items-center justify-center text-emerald-400 group-hover:text-white transition-colors" aria-hidden>
-                        <Icon size={24} />
-                      </div>
-                      <CardTitle className="text-xl font-bold text-white">{item.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-slate-300 leading-relaxed">{item.desc}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section id="process" className="py-24 bg-slate-900/30 relative z-10 border-t border-slate-800" aria-labelledby="process-heading">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 id="process-heading" className="text-3xl md:text-4xl font-bold text-white mb-4 main-heading">How We Work</h2>
-            <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full" />
-          </motion.div>
-
-          <div ref={processRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {PROCESS_STEPS.map((step, i) => (
-              <motion.div
-                key={step.step}
-                variants={revealVariants}
-                initial="hidden"
-                animate={processInView ? "visible" : "hidden"}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="relative"
-              >
-                {i < PROCESS_STEPS.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-0.5 bg-gradient-to-r from-slate-700 to-slate-800 z-0" aria-hidden />
-                )}
-                <div className="relative z-10 text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600/30 to-emerald-600/30 border border-slate-700 text-emerald-400 font-bold text-lg mb-4">
-                    {step.step}
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
-                </div>
-              </motion.div>
+          <BentoGrid className="mb-20">
+            {SERVICE_ITEMS.map((item) => (
+              <BentoGridItem
+                key={item.title}
+                title={item.title}
+                description={item.desc}
+                icon={item.icon}
+                span={item.span}
+              />
             ))}
-          </div>
+          </BentoGrid>
+
+          <MotionSection>
+            <h3 className="text-center text-sm font-semibold uppercase tracking-widest text-slate-400 mb-6">Tech Stack</h3>
+            <VelocityScroll duration={30}>
+              {TECH_STACK.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-slate-200 font-medium text-lg"
+                >
+                  {tech}
+                </span>
+              ))}
+            </VelocityScroll>
+          </MotionSection>
         </div>
       </section>
+
+      <MotionSection id="process" className="py-24 bg-slate-900/30 relative z-10 border-t border-slate-800" aria-labelledby="process-heading">
+        <div className="container mx-auto px-4">
+          <ProcessTimeline />
+        </div>
+      </MotionSection>
 
       <section id="work" className="py-24 relative z-10 border-t border-slate-800 overflow-hidden" aria-labelledby="work-heading">
         <div className="absolute inset-0 -z-10">

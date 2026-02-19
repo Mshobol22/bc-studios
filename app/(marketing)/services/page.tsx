@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ServicesPageBackground } from "@/components/ui/services-page-background";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -69,21 +70,22 @@ const AI_FAQS = [
 
 export default function ServicesPage() {
   return (
-    <main className="min-h-screen bg-transparent font-sans pt-16 pb-24 relative overflow-x-hidden">
-      <div className="container mx-auto px-4 pt-16 pb-8">
+    <main className="min-h-screen font-sans pt-16 pb-24 relative z-10 overflow-x-hidden">
+      <ServicesPageBackground />
+      <div className="container mx-auto px-4 pt-16 pb-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
           className="text-center mb-12"
         >
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-widest mb-4">
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-widest mb-4 [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
             What We Build
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 main-heading">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 main-heading [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
             Custom Development
           </h1>
-          <p className="text-slate-300 text-lg max-w-2xl mx-auto main-text">
+          <p className="text-slate-300 text-lg max-w-2xl mx-auto main-text [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
             From discovery to deployment, we deliver tailored software that fits
             your business.
           </p>
@@ -96,7 +98,7 @@ export default function ServicesPage() {
           className="max-w-3xl mx-auto"
         >
           <Tabs defaultValue="mobile" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-auto p-1 rounded-lg bg-slate-800/80 border border-slate-700">
+            <TabsList className="grid w-full grid-cols-3 h-auto p-1 rounded-lg bg-black/40 backdrop-blur-xl border border-white/20">
               <TabsTrigger
                 value="mobile"
                 className="rounded-md data-[state=active]:bg-emerald-600/80 data-[state=active]:text-white data-[state=active]:shadow-sm py-2.5 text-slate-300"
@@ -118,13 +120,13 @@ export default function ServicesPage() {
             </TabsList>
 
             <TabsContent value="mobile" className="mt-6">
-              <div className="rounded-xl border border-slate-700 bg-slate-900/70 backdrop-blur-sm overflow-hidden">
+              <div className="rounded-xl border border-white/10 bg-black/30 backdrop-blur-xl overflow-hidden">
                 <Accordion type="single" collapsible className="w-full">
                   {MOBILE_FAQS.map((faq) => (
                     <AccordionItem
                       key={faq.question}
                       value={faq.question}
-                      className="border-slate-700 px-4 last:border-b-0"
+                      className="border-white/10 px-4 last:border-b-0"
                     >
                       <AccordionTrigger className="text-left text-white hover:text-emerald-400 hover:no-underline py-4">
                         {faq.question}
@@ -139,13 +141,13 @@ export default function ServicesPage() {
             </TabsContent>
 
             <TabsContent value="web" className="mt-6">
-              <div className="rounded-xl border border-slate-700 bg-slate-900/70 backdrop-blur-sm overflow-hidden">
+              <div className="rounded-xl border border-white/10 bg-black/30 backdrop-blur-xl overflow-hidden">
                 <Accordion type="single" collapsible className="w-full">
                   {WEB_FAQS.map((faq) => (
                     <AccordionItem
                       key={faq.question}
                       value={faq.question}
-                      className="border-slate-700 px-4 last:border-b-0"
+                      className="border-white/10 px-4 last:border-b-0"
                     >
                       <AccordionTrigger className="text-left text-white hover:text-emerald-400 hover:no-underline py-4">
                         {faq.question}
@@ -160,13 +162,13 @@ export default function ServicesPage() {
             </TabsContent>
 
             <TabsContent value="ai" className="mt-6">
-              <div className="rounded-xl border border-slate-700 bg-slate-900/70 backdrop-blur-sm overflow-hidden">
+              <div className="rounded-xl border border-white/10 bg-black/30 backdrop-blur-xl overflow-hidden">
                 <Accordion type="single" collapsible className="w-full">
                   {AI_FAQS.map((faq) => (
                     <AccordionItem
                       key={faq.question}
                       value={faq.question}
-                      className="border-slate-700 px-4 last:border-b-0"
+                      className="border-white/10 px-4 last:border-b-0"
                     >
                       <AccordionTrigger className="text-left text-white hover:text-emerald-400 hover:no-underline py-4">
                         {faq.question}

@@ -85,16 +85,18 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const raw = localStorage.getItem(PENDING_PROPOSAL_KEY);
-    setPendingProposal(parsePendingProposal(raw));
+    queueMicrotask(() => setPendingProposal(parsePendingProposal(raw)));
   }, []);
 
   useEffect(() => {
     if (searchParams.get("payment") !== "success") return;
     if (confettiFired.current) return;
     confettiFired.current = true;
-    setPaymentSuccess(true);
-    localStorage.removeItem(PENDING_PROPOSAL_KEY);
-    setPendingProposal(null);
+    queueMicrotask(() => {
+      setPaymentSuccess(true);
+      localStorage.removeItem(PENDING_PROPOSAL_KEY);
+      setPendingProposal(null);
+    });
     triggerConfetti();
     window.history.replaceState({}, "", "/dashboard");
   }, [searchParams]);

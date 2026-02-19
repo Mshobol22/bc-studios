@@ -42,7 +42,7 @@ function ProductCard({
     >
       <Wrapper
         {...wrapperProps}
-        className="group block w-full h-full cursor-pointer rounded-xl overflow-hidden border border-slate-700 bg-slate-900/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover:shadow-emerald-900/20 hover:border-emerald-500/50 transition-all duration-300"
+        className="group block w-full h-full cursor-pointer rounded-xl overflow-hidden border border-white/20 bg-black/40 backdrop-blur-xl shadow-2xl shadow-black/40 ring-2 ring-white/15 hover:shadow-2xl hover:shadow-emerald-900/30 hover:border-emerald-500/50 hover:ring-emerald-500/30 transition-all duration-300"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
@@ -65,13 +65,13 @@ function ProductCard({
             sizes="(max-width: 640px) 280px, 320px"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-95 group-hover:opacity-100 transition-opacity" />
         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-          <span className="inline-block px-2 py-0.5 mb-2 text-xs font-bold uppercase tracking-wider rounded bg-emerald-500/30 text-emerald-300 border border-emerald-500/50">
+          <span className="inline-block px-2 py-0.5 mb-2 text-xs font-bold uppercase tracking-wider rounded bg-emerald-500/30 text-emerald-300 border border-emerald-500/50 [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
             {project.tag}
           </span>
-          <h3 className="text-lg font-bold leading-tight">{project.title}</h3>
-          <p className="text-sm text-slate-300 mt-0.5 line-clamp-2">{project.description}</p>
+          <h3 className="text-lg font-bold leading-tight [text-shadow:0_1px_4px_rgba(0,0,0,0.7)]">{project.title}</h3>
+          <p className="text-sm text-slate-300 mt-0.5 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">{project.description}</p>
         </div>
       </div>
       </Wrapper>
@@ -89,7 +89,10 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
   const x = useMotionValue(0);
   const animationRef = useRef<ReturnType<typeof animate> | null>(null);
   const isHoveredRef = useRef(false);
-  isHoveredRef.current = isHovered;
+
+  useEffect(() => {
+    isHoveredRef.current = isHovered;
+  }, [isHovered]);
 
   const hasEnoughItems = items.length >= MIN_ITEMS_TO_SLIDE;
   const shouldAnimate = hasEnoughItems && contentWidth > 0;
@@ -144,7 +147,7 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
       animationRef.current?.stop();
       animationRef.current = null;
     };
-  }, [isInView, isHovered, contentWidth, shouldAnimate]);
+  }, [isInView, isHovered, contentWidth, shouldAnimate, x]);
 
   // Reset position when we pause so resume doesn't jump
   const handleMouseLeave = () => {
@@ -156,7 +159,7 @@ export function ProductCarousel({ title, items }: ProductCarouselProps) {
 
   return (
     <section ref={containerRef} className="w-full">
-      <h3 className="text-xl font-bold text-white mb-6 px-1">{title}</h3>
+      <h3 className="text-xl font-bold text-white mb-6 px-1 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">{title}</h3>
       <div className="overflow-hidden -mx-4 sm:mx-0">
         {hasEnoughItems ? (
           <motion.div

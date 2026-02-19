@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getSolution } from "@/lib/solutionsData";
 import { Button } from "@/components/ui/button";
 import { WaitlistForm } from "./waitlist-form";
+import { SolutionDetailBackground } from "@/components/ui/solution-detail-background";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
 type Props = {
@@ -39,11 +40,8 @@ export default async function SolutionDetailPage({ params }: Props) {
   const hasExternalLink = Boolean(solution.externalLink);
 
   return (
-    <main className="min-h-screen bg-slate-950 font-sans pt-16 pb-24 relative z-10 overflow-x-hidden">
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-slate-950" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(16,185,129,0.08),transparent)]" />
-      </div>
+    <main className="min-h-screen bg-transparent font-sans pt-16 pb-24 relative z-10 overflow-x-hidden">
+      <SolutionDetailBackground />
 
       {/* Hero: full-width header */}
       <header className="w-full border-b border-slate-800/60 bg-slate-900/40 backdrop-blur-md">
