@@ -72,7 +72,7 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
         title: "Barakah Furniture",
         description: "Modern e-commerce and brand presence for a furniture retailer.",
         tag: "Website",
-        url: "https://barakat-furniture.vercel.app/",
+        url: "https://amazinghomefurniturestore.com",
         imageUrl: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
         imageAlt: "Barakah Furniture - modern furniture and e-commerce website by BC Studios",
       },
